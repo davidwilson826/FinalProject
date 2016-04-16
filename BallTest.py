@@ -11,16 +11,34 @@ Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
 
 class Ball(Sprite):
 
-  asset = CircleAsset(30, noline, black)
+    asset = CircleAsset(30, noline, black)
   
-  def __init__(self, position):
-    super().__init__(Ball.asset, position)
+    def __init__(self, position):
+        super().__init__(Ball.asset, position)
+        self.velocity = (0,0)
+        self.mag = 5
+        BallBounce.listenKeyEvent('keydown', 'right arrow', self.right)
+        BallBounce.listenKeyEvent('keydown', 'left arrow', self.left)
+        
+    def right(self, event):
+        self.velocity[0] += self.mag
+        
+    def left(self, event):
+        self.velocity[1] -= self.mag
+        
+    def step(self):
+        self.x += self.velocity[0]
+        self.y += self.velocity[1]
 
 class BallBounce(App):
 
-  def __init__(self):
-    super().__init__()
-    Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-    Sprite(Floor,(0,SCREEN_HEIGHT))
+    def __init__(self):
+        super().__init__()
+        Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+        Sprite(Floor,(0,SCREEN_HEIGHT))
+        
+    def step(self):
+        for x in self.getSpritesbyClass(Ball):
+            x.step()
     
 BallBounce().run()
