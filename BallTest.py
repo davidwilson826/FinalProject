@@ -5,7 +5,7 @@ SCREEN_HEIGHT = 600
 
 black = Color(0x000000, 1.0)
 
-noline = LineStyle(black, 0.0)
+noline = LineStyle(0.0, black)
 
 Floor = Sprite(RectangleAsset(10, 10, noline, black))
 
@@ -14,7 +14,7 @@ class Ball(Sprite):
   asset = CircleAsset(10, noline, black)
   
   def __init__(self, position):
-    super().__init__(Ball.asset, positioin)
+    super().__init__(Ball.asset, position)
 
 class BallBounce(App):
 
