@@ -16,7 +16,7 @@ class Ball(Sprite):
     def __init__(self, position):
         super().__init__(Ball.asset, position)
         self.velocity = (0,0)
-        self.mag = 5
+        self.mag = 1
         BallBounce.listenKeyEvent('keydown', 'right arrow', self.right)
         BallBounce.listenKeyEvent('keydown', 'left arrow', self.left)
         
@@ -24,7 +24,7 @@ class Ball(Sprite):
         self.velocity[0] += self.mag
         
     def left(self, event):
-        self.velocity[1] -= self.mag
+        self.velocity[0] -= self.mag
         
     def step(self):
         self.x += self.velocity[0]
