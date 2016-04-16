@@ -31,6 +31,7 @@ class Ball(Sprite):
     def step(self):
         if self.y >= SCREEN_HEIGHT-35:
             self.velocity[1] *= -1
+            self.velocity[1] -= 1
         self.velocity[1] += GRAVITY
         print(self.velocity)
         self.x += self.velocity[0]
