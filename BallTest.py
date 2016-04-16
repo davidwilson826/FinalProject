@@ -29,11 +29,12 @@ class Ball(Sprite):
         self.velocity[0] -= self.mag
         
     def step(self):
-        self.velocity[1] += GRAVITY
-        self.x += self.velocity[0]
-        self.y += self.velocity[1]
         if self.y >= SCREEN_HEIGHT-35:
             self.velocity[1] *= -1
+        self.velocity[1] += GRAVITY
+        print(self.velocity)
+        self.x += self.velocity[0]
+        self.y += self.velocity[1]
 
 class BallBounce(App):
 
