@@ -7,7 +7,7 @@ black = Color(0x000000, 1.0)
 
 noline = LineStyle(0.0, black)
 
-GRAVITY = 1
+GRAVITY = 0.5
 
 Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
 
@@ -31,7 +31,7 @@ class Ball(Sprite):
     def step(self):
         if self.y >= SCREEN_HEIGHT-35:
             self.velocity[1] *= -1
-            self.velocity[1] -= 1
+            self.velocity[1] -= GRAVITY
         self.velocity[1] += GRAVITY
         print(self.velocity)
         self.x += self.velocity[0]
