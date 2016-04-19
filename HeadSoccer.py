@@ -18,10 +18,6 @@ class PhysicsObject(Sprite):
         self.velocity = (0,0)
         
     def step(self):
-        if self.y >= SCREEN_HEIGHT-35:
-            self.velocity[1] *= -1
-            self.velocity[1] -= GRAVITY
-        self.velocity[1] += GRAVITY
         self.x += self.velocity[0]
         self.y += self.velocity[1]
         
@@ -40,6 +36,13 @@ class Ball(PhysicsObject):
         
     def left(self, event):
         self.velocity[0] -= self.mag
+        
+    def step(self):
+        super().step()
+        if self.y >= SCREEN_HEIGHT-35:
+            self.velocity[1] *= -1
+            self.velocity[1] -= GRAVITY
+        self.velocity[1] += GRAVITY
 
 class HeadSoccer(App):
 
