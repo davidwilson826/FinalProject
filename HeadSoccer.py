@@ -21,6 +21,25 @@ class PhysicsObject(Sprite):
         self.x += self.velocity[0]
         self.y += self.velocity[1]
         
+class Player(PhysicsObject):
+    
+    asset = CircleAsset(30, noline, black)
+    
+    def __init__(self, position):
+        super().__init__(position)
+        self.mag = 1
+        self.speed = 5
+        HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
+        HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
+        HeadSoccer.listenKeyEvent('keyup', 'd', self.left)
+        HeadSoccer.listenKeyEvent('keyup', 'a', self.right)
+        
+    def right(self, event):
+        self.velocity[0] += self.speed
+        
+    def left(self, event):
+        self.velocity[1] -= self.speed
+        
 class Ball(PhysicsObject):
     
     asset = CircleAsset(30, noline, black)
@@ -48,12 +67,12 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+        #Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
+        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT-5))
         
     def step(self):
         for x in self.getSpritesbyClass(Ball):
             x.step()
     
 HeadSoccer().run()
-
