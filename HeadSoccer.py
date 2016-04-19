@@ -64,12 +64,11 @@ class PlayerCover(Sprite):
     
     def __init__(self, position):
         super().__init__(PlayerCover.asset, position)
-        self.fxcenter = self.fycenter = 0.5
         
     def step(self):
-        for x in HeadSoccer.getSpritesbyClass:
-            self.x = x.x
-            self.y = x.y+15
+        for x in HeadSoccer.getSpritesbyClass(Player):
+            self.x = x.x-30
+            self.y = x.y
         
 class Ball(PhysicsObject):
     
@@ -103,9 +102,10 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
+        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
+        PlayerCover((0,0))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
-        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
@@ -114,5 +114,6 @@ class HeadSoccer(App):
     def step(self):
         self.classStep(Ball)
         self.classStep(Player)
+        self.classStep(PlayerCover)
     
 HeadSoccer().run()
