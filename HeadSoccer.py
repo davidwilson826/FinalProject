@@ -4,6 +4,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 
 black = Color(0x000000, 1.0)
+white = Color(0xffffff, 1.0)
 
 noline = LineStyle(0.0, black)
 
@@ -56,6 +57,19 @@ class Player(PhysicsObject):
             self.velocity[1] += GRAVITY
         elif self.y == SCREEN_HEIGHT:
             self.velocity[1] = 0
+            
+class PlayerCover(Sprite):
+    
+    asset = RectangleAsset(60, 30, noline, white)
+    
+    def __init__(self, position):
+        super().__init__(PlayerCover.asset, position)
+        self.fxcenter = self.fycenter = 0.5
+        
+    def step(self):
+        for x in HeadSoccer.getSpritesbyClass:
+            self.x = x.x
+            self.y = x.y+15
         
 class Ball(PhysicsObject):
     
