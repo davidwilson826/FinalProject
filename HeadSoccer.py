@@ -64,7 +64,7 @@ class Ball(PhysicsObject):
     def __init__(self, position):
         super().__init__(Ball.asset, position)
         self.mag = 1
-        self.mass = 1
+        self.mass = 2
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
         
@@ -100,6 +100,5 @@ class HeadSoccer(App):
     def step(self):
         self.classStep(Ball)
         self.classStep(Player)
-        
     
 HeadSoccer().run()
