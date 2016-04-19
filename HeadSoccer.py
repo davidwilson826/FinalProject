@@ -11,13 +11,26 @@ GRAVITY = 0.5
 
 Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
 
-class Ball(Sprite):
-
-    asset = CircleAsset(30, noline, black)
+class PhysicsObject(Sprite):
   
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+        self.velocity = (0,0)
+        
+    def step(self):
+        if self.y >= SCREEN_HEIGHT-35:
+            self.velocity[1] *= -1
+            self.velocity[1] -= GRAVITY
+        self.velocity[1] += GRAVITY
+        self.x += self.velocity[0]
+        self.y += self.velocity[1]
+        
+class Ball(PhysicsObject):
+    
+    asset = CircleAsset(30, noline, black)
+    
     def __init__(self, position):
         super().__init__(Ball.asset, position)
-        self.velocity = (0,0)
         self.mag = 1
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
@@ -27,15 +40,6 @@ class Ball(Sprite):
         
     def left(self, event):
         self.velocity[0] -= self.mag
-        
-    def step(self):
-        if self.y >= SCREEN_HEIGHT-35:
-            self.velocity[1] *= -1
-            self.velocity[1] -= GRAVITY
-        self.velocity[1] += GRAVITY
-        print(self.velocity)
-        self.x += self.velocity[0]
-        self.y += self.velocity[1]
 
 class HeadSoccer(App):
 
