@@ -1,4 +1,5 @@
-from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle
+from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
+from time import sleep
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
@@ -106,12 +107,24 @@ class Ball(PhysicsObject):
             self.velocity[1] -= GRAVITY
         self.velocity[1] += GRAVITY
         if len(self.collidingWithSprites(Goal)) > 0:
-            for x in self.collidingWithSprites(Goal):
-                self.score(x)
+            if self.y <= 230:
+                self.velocity[1] *= -1
+            else:
+                for x in self.collidingWithSprites(Goal):
+                    self.score(x)
+                ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
 #        if len(self.collidingWithSprites(Player)) > 0:
 #            for x in self.collidingWithSprites(Player):
 #                self.velocity[0] += x.mass*x.velocity[0]/self.mass
 #                self.velocity[1] += x.mass*x.velocity[1]/self.mass
+
+class ScoreText(Sprite):
+    
+    asset = TextAsset('Goal!')
+    
+    def __init__(self, position):
+        super().__init__(ScoreText.asset, position)
+        sleep(1)
 
 class HeadSoccer(App):
 
@@ -122,7 +135,7 @@ class HeadSoccer(App):
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
-        Goal((SCREEN_WIDTH-25,SCREEN_HEIGHT-200))
+        Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
