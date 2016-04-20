@@ -1,5 +1,7 @@
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
-from time import sleep
+from time import sleep, time
+
+start = time()
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
@@ -90,6 +92,7 @@ class Ball(PhysicsObject):
         self.mass = 2
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
+        self.scored = False
         
     def right(self, event):
         self.velocity[0] += self.mag
@@ -109,10 +112,15 @@ class Ball(PhysicsObject):
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= 230:
                 self.velocity[1] *= -1
-            else:
+            elif self.scored == False:
                 for x in self.collidingWithSprites(Goal):
                     self.score(x)
+                self.scored = True
                 ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+            elif self.scored == True:
+                if start-time() == 2:
+                    self.x = SCREEN_WIDTH/2
+                    self.y = SCREEN_HEIGHT/2
 #        if len(self.collidingWithSprites(Player)) > 0:
 #            for x in self.collidingWithSprites(Player):
 #                self.velocity[0] += x.mass*x.velocity[0]/self.mass
@@ -124,7 +132,7 @@ class ScoreText(Sprite):
     
     def __init__(self, position):
         super().__init__(ScoreText.asset, position)
-        sleep(1)
+        #sleep(1)
 
 class HeadSoccer(App):
 
