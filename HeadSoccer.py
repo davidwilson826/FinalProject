@@ -18,7 +18,7 @@ class Goal(Sprite):
     
     def __init__(self, position):
         super().__init__(Goal.asset, position)
-        self.id = len(HeadSoccer.getSpritesbyClass(Goal))
+        self.ident = len(HeadSoccer.getSpritesbyClass(Goal))
 
 class PhysicsObject(Sprite):
   
@@ -97,7 +97,7 @@ class Ball(PhysicsObject):
         self.velocity[0] -= self.mag
         
     def score(self, Goal):
-        print(Goal.id)
+        print(Goal.ident)
         
     def step(self):
         super().step()
@@ -122,6 +122,7 @@ class HeadSoccer(App):
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
+        Goal((SCREEN_WIDTH-25,SCREEN_HEIGHT-200))
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
