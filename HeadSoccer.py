@@ -12,6 +12,14 @@ GRAVITY = 0.5
 
 Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
 
+class Goal(Sprite):
+    
+    asset = RectangleAsset(50, 200, noline, black)
+    
+    def __init__(self, position):
+        super().__init__(Goal.asset, position)
+        self.id = len(HeadSoccer.getSpritesbyClass(Goal))
+
 class PhysicsObject(Sprite):
   
     def __init__(self, asset, position):
@@ -53,6 +61,7 @@ class Player(PhysicsObject):
             
     def step(self):
         super().step()
+        print(self.y)
         if self.y < SCREEN_HEIGHT:
             self.velocity[1] += GRAVITY
         elif self.y == SCREEN_HEIGHT:
@@ -87,25 +96,32 @@ class Ball(PhysicsObject):
     def left(self, event):
         self.velocity[0] -= self.mag
         
+    def score(self, Goal):
+        print(Goal.id)
+        
     def step(self):
         super().step()
         if self.y >= SCREEN_HEIGHT-30:
             self.velocity[1] *= -1
             self.velocity[1] -= GRAVITY
         self.velocity[1] += GRAVITY
-        if len(self.collidingWithSprites(Player)) > 0:
-            for x in self.collidingWithSprites(Player):
-                self.velocity[0] += x.mass*x.velocity[0]/self.mass
-                self.velocity[1] += x.mass*x.velocity[1]/self.mass
+        if len(self.collidingWithSprites(Goal)) > 0:
+            for x in self.collidingWithSprites(Goal):
+                self.score(x)
+#        if len(self.collidingWithSprites(Player)) > 0:
+#            for x in self.collidingWithSprites(Player):
+#                self.velocity[0] += x.mass*x.velocity[0]/self.mass
+#                self.velocity[1] += x.mass*x.velocity[1]/self.mass
 
 class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
-        PlayerCover((0,0))
+        #Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
+        #PlayerCover((0,0))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
+        Goal((0,SCREEN_HEIGHT-200))
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
