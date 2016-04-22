@@ -11,6 +11,11 @@ white = Color(0xffffff, 1.0)
 
 noline = LineStyle(0.0, black)
 
+def classDestroy(sclass):
+    while len(HeadSoccer.getSpritesbyClass(sclass)) > 0:
+        for x in HeadSoccer.getSpritesbyClass(sclass):
+            x.destroy()
+
 GRAVITY = 0.5
 
 Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
@@ -21,7 +26,7 @@ class Goal(Sprite):
     
     def __init__(self, position):
         super().__init__(Goal.asset, position)
-        self.ident = len(HeadSoccer.getSpritesbyClass(Goal))
+        self.ident = len(HeadSoccer.getSpritesbyClass(Goal))-1
 
 class PhysicsObject(Sprite):
   
@@ -92,6 +97,7 @@ class Ball(PhysicsObject):
         self.mass = 2
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
+        self.score = [0,0]
         self.scored = False
         
     def right(self, event):
@@ -100,9 +106,6 @@ class Ball(PhysicsObject):
     def left(self, event):
         self.velocity[0] -= self.mag
         
-    def score(self, Goal):
-        print(Goal.ident)
-        
     def step(self):
         super().step()
         if self.y >= SCREEN_HEIGHT-30:
@@ -110,14 +113,14 @@ class Ball(PhysicsObject):
             self.velocity[1] -= GRAVITY
         self.velocity[1] += GRAVITY
         if len(self.collidingWithSprites(Goal)) > 0:
-            if self.y <= 230:
+            if self.y <= SCREEN_HEIGHT-230:
                 self.velocity[1] *= -1
             elif self.scored == False:
                 for x in self.collidingWithSprites(Goal):
-                    self.score(x)
+                    HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
                 self.scored = True
-                ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-        if self.scored == True and time()-start >= 2:
+                HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = True
+        if self.scored == True and time()-start >= 9:
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
             self.velocity = [0,0]
@@ -129,7 +132,22 @@ class ScoreText(Sprite):
     
     def __init__(self, position):
         super().__init__(ScoreText.asset, position)
-        #sleep(1)
+        self.visible = False
+        self.score = [0,0]
+        
+    def goal(self, Goal):
+        self.score[Goal.ident] += 1
+        classDestroy(ScoreNum)
+        self.placeScore()
+        
+    def placeScore(self):
+        ScoreNum(TextAsset(self.score[0]), (SCREEN_WIDTH/8,SCREEN_HEIGHT/2))
+        ScoreNum(TextAsset(self.score[1]), (SCREEN_WIDTH*(7/8),SCREEN_HEIGHT/2))
+        
+class ScoreNum(Sprite):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
 
 class HeadSoccer(App):
 
@@ -141,6 +159,8 @@ class HeadSoccer(App):
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
+        ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+        self.getSpritesbyClass(ScoreText)[0].placeScore()
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
