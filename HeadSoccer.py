@@ -117,14 +117,11 @@ class Ball(PhysicsObject):
                     self.score(x)
                 self.scored = True
                 ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-            elif self.scored == True:
-                if start-time() == 2:
-                    self.x = SCREEN_WIDTH/2
-                    self.y = SCREEN_HEIGHT/2
-#        if len(self.collidingWithSprites(Player)) > 0:
-#            for x in self.collidingWithSprites(Player):
-#                self.velocity[0] += x.mass*x.velocity[0]/self.mass
-#                self.velocity[1] += x.mass*x.velocity[1]/self.mass
+        if self.scored == True and time()-start >= 2:
+            self.x = SCREEN_WIDTH/2
+            self.y = SCREEN_HEIGHT/2
+            self.velocity = [0,0]
+            self.scored = False
 
 class ScoreText(Sprite):
     
