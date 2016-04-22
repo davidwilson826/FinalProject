@@ -33,6 +33,7 @@ class PhysicsObject(Sprite):
     def __init__(self, asset, position):
         super().__init__(asset, position)
         self.velocity = [0,0]
+        self.fxcenter = self.fycenter = 0.5
         
     def step(self):
         self.x += self.velocity[0]
@@ -106,15 +107,19 @@ class Ball(PhysicsObject):
     def left(self, event):
         self.velocity[0] -= self.mag
         
+    def bounce(self):
+        self.velocity[1] *= -1
+        self.velocity[1] -= GRAVITY
+        
     def step(self):
         super().step()
         if self.y >= SCREEN_HEIGHT-30:
-            self.velocity[1] *= -1
-            self.velocity[1] -= GRAVITY
+            self.bounce()
         self.velocity[1] += GRAVITY
         if len(self.collidingWithSprites(Goal)) > 0:
-            if self.y <= SCREEN_HEIGHT-230:
-                self.velocity[1] *= -1
+            if self.y <= SCREEN_HEIGHT-200:
+#                self.bounce()
+                print('hello')
             elif self.scored == False:
                 for x in self.collidingWithSprites(Goal):
                     HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
