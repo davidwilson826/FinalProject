@@ -117,7 +117,7 @@ class Ball(PhysicsObject):
             self.bounce()
         self.velocity[1] += GRAVITY
         if len(self.collidingWithSprites(Goal)) > 0:
-            if self.y <= SCREEN_HEIGHT-200:
+            if self.y <= SCREEN_HEIGHT-230:
 #                self.bounce()
                 print('hello')
             elif self.scored == False:
@@ -125,10 +125,10 @@ class Ball(PhysicsObject):
                     HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
                 self.scored = True
                 HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = True
-        if self.scored == True and time()-start >= 9:
+        if self.scored == True and time()-start >= 2:
+            self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
-            self.velocity = [0,0]
             self.scored = False
 
 class ScoreText(Sprite):
