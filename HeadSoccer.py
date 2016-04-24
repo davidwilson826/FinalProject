@@ -48,7 +48,7 @@ class Player(PhysicsObject):
         self.mag = 1
         self.speed = 5
         self.jumpForce = 15
-        self.mass = 5
+        self.mass = 2
         HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
         HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
@@ -73,8 +73,9 @@ class Player(PhysicsObject):
         print(self.y)
         if self.y < SCREEN_HEIGHT:
             self.velocity[1] += GRAVITY
-        elif self.y == SCREEN_HEIGHT:
+        elif self.y >= SCREEN_HEIGHT:
             self.velocity[1] = 0
+            self.y = SCREEN_HEIGHT
             
 class PlayerCover(Sprite):
     
@@ -166,8 +167,8 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        #Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
-        #PlayerCover((0,0))
+        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
+        PlayerCover((0,0))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
