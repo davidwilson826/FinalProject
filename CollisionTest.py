@@ -33,11 +33,12 @@ class Ball1(Ball):
         self.velocity = [5,0]
         self.mass = 5
         self.collision = False
+        self.velCollision = [0,0]
         
     def step(self):
         super().step()
         print(' ')
-        if len(self.collidingWithSprites(Ball2)) > 0 and self.collsion == False:
+        if len(self.collidingWithSprites(Ball2)) > 0 and self.collision == False:
             for x in self.collidingWithSprites(Ball2):
                 self.velCollision = self.velocity
                 self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
