@@ -121,10 +121,10 @@ class Ball(PhysicsObject):
         if len(self.collidingWithSprites(Player)) > 0:
             for x in self.collidingWithSprites(Player):
                 self.velCollision = self.velocity
-                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
-                self.velocity[1] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])+x.velocity[1]
-                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
-                x.velocity[1] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])+x.velocity[1]
+                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
+                self.velocity[1] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])#+x.velocity[1]
+                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
+                x.velocity[1] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])#+x.velocity[1]
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
 #                self.bounce()
