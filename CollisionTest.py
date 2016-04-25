@@ -37,8 +37,8 @@ class Ball1(Ball):
         if len(self.collidingWithSprites(Ball2)) > 0:
             for x in self.collidingWithSprites(Ball2):
                 self.velCollision = self.velocity
-                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
-                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
+                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
+                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
         
 class Ball2(Ball):
     
