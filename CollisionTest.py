@@ -22,6 +22,7 @@ class Ball(Sprite):
     def step(self):
         self.x += self.velocity[0]
         self.y += self.velocity[1]
+        print(self.velocity,end=', ')
         
 class Ball1(Ball):
     
@@ -31,14 +32,18 @@ class Ball1(Ball):
         super().__init__(Ball1.asset, position)
         self.velocity = [5,0]
         self.mass = 5
+        self.collision = False
         
     def step(self):
         super().step()
-        if len(self.collidingWithSprites(Ball2)) > 0:
+        print(' ')
+        if len(self.collidingWithSprites(Ball2)) > 0 and self.collsion == False:
             for x in self.collidingWithSprites(Ball2):
                 self.velCollision = self.velocity
                 self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
                 x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
+                print('!!!'+self.velocity+'!!!')
+            self.collision = True
         
 class Ball2(Ball):
     
