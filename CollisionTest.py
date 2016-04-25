@@ -32,13 +32,21 @@ class Ball1(Ball):
         self.velocity = [5,0]
         self.mass = 5
         
+    def step(self):
+        super().step()
+        if len(self.collidingWithSprites(Ball2)) > 0:
+            for x in self.collidingWithSprites(Ball2):
+                self.velCollision = self.velocity
+                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
+                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])+x.velocity[0]
+        
 class Ball2(Ball):
     
     asset = CircleAsset(30, noline, white)
     
     def __init__(self, position):
-        super().__init__(Ball1.asset, position)
-        self.velocity = [5,0]
+        super().__init__(Ball2.asset, position)
+        self.velocity = [-5,0]
         self.mass = 5
         
 class Test(App):
@@ -47,14 +55,16 @@ class Test(App):
         super().__init__()
         Ball1((30,SCREEN_HEIGHT/2))
         Ball2((SCREEN_WIDTH-30,SCREEN_HEIGHT/2))
+        self.go = False
+        self.listenKeyEvent('keydown', 'space', self.start)
         
-    def classStep(self, sclass):
-        for x in self.getSpritesbyClass(sclass):
-            x.step()
+    def start(self, event):
+        self.go = True
         
     def step(self):
-#        self.classStep(Ball1)
-#        self.classStep(Ball2)
-        for x in [Ball1,Ball2]:
-            for y in self.getSpritesbyClass(x):
-                y.step()
+        if self.go == True:
+            for x in [Ball1, Ball2]:
+                for y in self.getSpritesbyClass(x):
+                    y.step()
+                
+Test().run()
