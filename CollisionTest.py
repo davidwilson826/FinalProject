@@ -37,13 +37,13 @@ class Ball1(Ball):
         
     def step(self):
         super().step()
-        #print(' ')
         if len(self.collidingWithSprites(Ball2)) > 0 and self.collision == False:
-            for x in self.collidingWithSprites(Ball2):
-                self.velCollision = self.velocity
-                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
-                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
-                print('!!!'+str(self.velocity)+'!!!')
+            colliding = self.collidingWithSprites(Ball2)[0]
+            self.velCollision = self.velocity[:]
+            self.velocity[0] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[0]-colliding.velocity[0])+colliding.velocity[0]
+            colliding.velocity[0] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[0]-colliding.velocity[0])+colliding.velocity[0]
+            print(self.velocity)
+            print(colliding.velocity)
             self.collision = True
         
 class Ball2(Ball):
@@ -52,7 +52,7 @@ class Ball2(Ball):
     
     def __init__(self, position):
         super().__init__(Ball2.asset, position)
-        self.velocity = [-5,0]
+        self.velocity = [2,0]
         self.mass = 5
         
 class Test(App):
@@ -60,7 +60,8 @@ class Test(App):
     def __init__(self):
         super().__init__()
         Ball1((30,SCREEN_HEIGHT/2))
-        Ball2((SCREEN_WIDTH-30,SCREEN_HEIGHT/2))
+        #Ball2((SCREEN_WIDTH-30,SCREEN_HEIGHT/2))
+        Ball2((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.go = False
         self.listenKeyEvent('keydown', 'space', self.start)
         
