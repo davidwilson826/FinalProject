@@ -102,6 +102,7 @@ class Ball(PhysicsObject):
         self.score = [0,0]
         self.scored = False
         self.velCollision = [0,0]
+        self.collision = False
         
     def right(self, event):
         self.velocity[0] += self.mag
@@ -118,13 +119,15 @@ class Ball(PhysicsObject):
         if self.y >= SCREEN_HEIGHT-30:
             self.bounce()
         self.velocity[1] += GRAVITY
-        if len(self.collidingWithSprites(Player)) > 0:
-            for x in self.collidingWithSprites(Player):
-                self.velCollision = self.velocity
-                self.velocity[0] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
-                self.velocity[1] = (self.mass-x.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])#+x.velocity[1]
-                x.velocity[0] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[0]-x.velocity[0])#+x.velocity[0]
-                x.velocity[1] = (2*self.mass)/(self.mass+x.mass)*(self.velCollision[1]-x.velocity[1])#+x.velocity[1]
+        if len(self.collidingWithSprites(Player)) > 0 and self.collision == False:
+            colliding = self.collidingWithSprites(Player)[0]
+            self.velCollision = self.velocity[:]
+            for x in range(2):
+                self.velocity[x] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+                colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+                print(self.velocity)
+                print(colliding.velocity)
+                self.collision = True
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
 #                self.bounce()
