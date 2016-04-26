@@ -30,21 +30,25 @@ class Ball1(Ball):
     
     def __init__(self, position):
         super().__init__(Ball1.asset, position)
-        self.velocity = [5,0]
+        self.velocity = [5,-1]
         self.mass = 5
         self.collision = False
         self.velCollision = [0,0]
+        self.frames = 0
         
     def step(self):
         super().step()
+        self.frames += 1
         if len(self.collidingWithSprites(Ball2)) > 0 and self.collision == False:
             colliding = self.collidingWithSprites(Ball2)[0]
             self.velCollision = self.velocity[:]
-            self.velocity[0] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[0]-colliding.velocity[0])+colliding.velocity[0]
-            colliding.velocity[0] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[0]-colliding.velocity[0])+colliding.velocity[0]
-            print(self.velocity)
-            print(colliding.velocity)
+            for x in range(2):
+                self.velocity[x] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+                colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+                print(self.velocity)
+                print(colliding.velocity)
             self.collision = True
+            print(self.frames)
         
 class Ball2(Ball):
     
@@ -59,7 +63,8 @@ class Test(App):
     
     def __init__(self):
         super().__init__()
-        Ball1((30,SCREEN_HEIGHT/2))
+        #Ball1((30,SCREEN_HEIGHT/2))
+        Ball1((30,SCREEN_HEIGHT/2+136))
         #Ball2((SCREEN_WIDTH-30,SCREEN_HEIGHT/2))
         Ball2((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.go = False
@@ -75,3 +80,8 @@ class Test(App):
                     y.step()
                 
 Test().run()
+
+'''
+[2.0, 0.0]
+[5.0, 1.0]
+'''
