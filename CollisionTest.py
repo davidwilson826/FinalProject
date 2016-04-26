@@ -31,8 +31,8 @@ class Ball1(Ball):
     
     def __init__(self, position):
         super().__init__(Ball1.asset, position)
-        self.velocity = [5,-1]
-        self.mass = 5
+        self.velocity = [5,0]#-1]
+        self.mass = 2#5
         self.collision = False
         self.velCollision = [0,0]
         self.frames = 0
@@ -65,7 +65,7 @@ class Test(App):
     def __init__(self):
         super().__init__()
         #Ball1((30,SCREEN_HEIGHT/2))
-        Ball1((30,SCREEN_HEIGHT/2+136))
+        Ball1((30,SCREEN_HEIGHT/2))#+136))
         #Ball2((SCREEN_WIDTH-30,SCREEN_HEIGHT/2))
         Ball2((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.go = False
