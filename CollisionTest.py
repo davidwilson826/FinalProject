@@ -18,6 +18,7 @@ class Ball(Sprite):
     def __init__(self, asset, position):
         super().__init__(asset, position)
         self.fxcenter = self.fycenter = 0.5
+        self.circularCollisionModel()
         
     def step(self):
         self.x += self.velocity[0]
