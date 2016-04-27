@@ -199,13 +199,13 @@ class HeadSoccer(App):
         for x in self.getSpritesbyClass(sclass):
             x.step()
             
-    def time(self):
+    def timeGame(self):
         self.elapsed = time()-self.start
-        self.getSpritesbyClass(TimeText)[0].destroy()
-        TimeText(TextAsset(str(self.elapsed//60)+':'+str(int(self.elapsed%60))),
-        (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
+        classDestroy(TimeText)
+        TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),(SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
+        self.timeGame()
         self.classStep(Ball)
         self.classStep(Player)
         self.classStep(PlayerCover)
