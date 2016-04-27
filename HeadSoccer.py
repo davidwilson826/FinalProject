@@ -138,7 +138,7 @@ class Ball(PhysicsObject):
                     HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
                 self.scored = True
                 HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = True
-        if self.scored == True and time()-start >= 2:
+        if self.scored == True and time()-start >= 5:
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
