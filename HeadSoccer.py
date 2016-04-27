@@ -1,7 +1,5 @@
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
-from time import sleep, time
-
-start = time()
+from time import time
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
@@ -55,6 +53,7 @@ class Player(PhysicsObject):
         HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
         HeadSoccer.listenKeyEvent('keyup', 'a', self.stop)
         HeadSoccer.listenKeyEvent('keydown', 'w', self.jump)
+        PlayerCover((0,0))
         
     def right(self, event):
         self.velocity[0] = self.speed
@@ -104,6 +103,7 @@ class Ball(PhysicsObject):
         self.scored = False
         self.velCollision = [0,0]
         self.collision = False
+        self.scoreTime = 0
         
     def right(self, event):
         self.velocity[0] += self.mag
@@ -137,8 +137,9 @@ class Ball(PhysicsObject):
                 for x in self.collidingWithSprites(Goal):
                     HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
                 self.scored = True
+                self.scoreTime = time()
                 HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = True
-        if self.scored == True and time()-start >= 5:
+        if self.scored == True and time()-self.scoreTime >= 5:
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
@@ -171,8 +172,7 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
-        PlayerCover((0,0))
+        #Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
