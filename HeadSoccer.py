@@ -205,7 +205,7 @@ class HeadSoccer(App):
         TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),(SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
-        self.timeGame()
+        #self.timeGame()
         self.classStep(Ball)
         self.classStep(Player)
         self.classStep(PlayerCover)
