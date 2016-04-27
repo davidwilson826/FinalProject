@@ -39,10 +39,15 @@ class PhysicsObject(Sprite):
         self.velocity = [0,0]
         self.fxcenter = self.fycenter = 0.5
         self.circularCollisionModel()
+        self.frameTime = [time(),time()]
+        self.deltaTime = 0
         
     def step(self):
-        self.x += self.velocity[0]
-        self.y += self.velocity[1]
+        self.frameTime[0] = self.frameTime[1]
+        self.frameTime[1] = time()
+        self.deltaTime = self.frameTime[1]-self.frameTime[0]
+        self.x += self.velocity[0]*self.deltaTime
+        self.y += self.velocity[1]*self.deltaTime
         
 class Player(PhysicsObject):
     
@@ -159,13 +164,14 @@ class ScoreText(Sprite):
         super().__init__(ScoreText.asset, position)
         self.visible = False
         self.score = [0,0]
+        self.placeScore()
         
     def goal(self, Goal):
         self.score[Goal.ident] += 1
-        classDestroy(ScoreNum)
         self.placeScore()
         
     def placeScore(self):
+        classDestroy(ScoreNum)
         ScoreNum(TextAsset(self.score[0]), (SCREEN_WIDTH/8,SCREEN_HEIGHT/2))
         ScoreNum(TextAsset(self.score[1]), (SCREEN_WIDTH*(7/8),SCREEN_HEIGHT/2))
         
@@ -191,7 +197,7 @@ class HeadSoccer(App):
         Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-        self.getSpritesbyClass(ScoreText)[0].placeScore()
+#        self.getSpritesbyClass(ScoreText)[0].placeScore()
         self.start = time()
         self.elapsed = 0
         
