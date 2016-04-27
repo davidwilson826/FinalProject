@@ -145,7 +145,7 @@ class Ball(PhysicsObject):
                 self.scored = True
                 self.scoreTime = time()
                 HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = True
-        if self.scored == True and time()-self.scoreTime >= 5:
+        if self.scored == True and time()-self.scoreTime >= 2:
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
@@ -205,7 +205,7 @@ class HeadSoccer(App):
         TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),(SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
-        #self.timeGame()
+        self.timeGame()
         self.classStep(Ball)
         self.classStep(Player)
         self.classStep(PlayerCover)
