@@ -49,6 +49,14 @@ class PhysicsObject(Sprite):
         self.x += self.velocity[0]*self.deltaTime
         self.y += self.velocity[1]*self.deltaTime
         
+class Experiment(PhysicsObject):
+    
+    asset = CircleAsset(10, noline, black)
+    
+    def __init__(self, position):
+        super().__init__(Experiment.asset, self)
+        self.velocity = [5,0]
+        
 class Player(PhysicsObject):
     
     asset = CircleAsset(50, noline, black)
