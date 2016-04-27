@@ -1,3 +1,9 @@
+''' 
+Head Soccer
+Author: David Wilson
+Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-python
+'''
+
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
@@ -167,6 +173,13 @@ class ScoreNum(Sprite):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
+        self.fxcenter = self.fycenter = 0.5
+        
+class TimeText(Sprite):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+        self.fxcenter = self.fycenter = 0.5
 
 class HeadSoccer(App):
 
@@ -179,10 +192,18 @@ class HeadSoccer(App):
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.getSpritesbyClass(ScoreText)[0].placeScore()
+        self.start = time()
+        self.elapsed = 0
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
             x.step()
+            
+    def time(self):
+        self.elapsed = time()-self.start
+        self.getSpritesbyClass(TimeText)[0].destroy()
+        TimeText(TextAsset(str(self.elapsed//60)+':'+str(int(self.elapsed%60))),
+        (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
         self.classStep(Ball)
