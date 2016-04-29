@@ -95,7 +95,6 @@ class Player(PhysicsObject):
             
     def step(self):
         super().step()
-        print(self.y)
         if self.y < SCREEN_HEIGHT:
             self.velocity[1] += GRAVITY
         elif self.y >= SCREEN_HEIGHT:
