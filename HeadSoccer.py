@@ -28,7 +28,6 @@ class Border(Sprite):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
-        self.fxcenter = self.fycenter = 0.5
 
 class Goal(Sprite):
     
@@ -203,9 +202,9 @@ class HeadSoccer(App):
         super().__init__()
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-        for x in [(0,0.5,10,SCREEN_HEIGHT), (1,0.5,10,SCREEN_HEIGHT), 
-        (0.5,1,SCREEN_WIDTH,10), (0.5,0,SCREEN_WIDTH,10)]:
-            Border(RectangleAsset(x[2], x[3], noline, black), (x[0]*SCREEN_WIDTH,x[1]*SCREEN_HEIGHT))
+        for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
+        (0,SCREEN_HEIGHT-5,SCREEN_WIDTH,10), (0,0,SCREEN_WIDTH,10)]:
+            Border(RectangleAsset(x[2], x[3], noline, black), (x[0],x[1]))
         Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
