@@ -1,7 +1,8 @@
 ''' 
 Head Soccer
 Author: David Wilson
-Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-python
+Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-python,
+https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
@@ -12,6 +13,7 @@ SCREEN_HEIGHT = 600
 
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
+blue = Color(0x0000ff, 1.0)
 
 noline = LineStyle(0.0, black)
 
@@ -22,7 +24,11 @@ def classDestroy(sclass):
 
 GRAVITY = 25
 
-Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
+class Border(Sprite):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+        self.fxcenter = self.fycenter = 0.5
 
 class Goal(Sprite):
     
@@ -59,7 +65,7 @@ class Experiment(PhysicsObject):
         
 class Player(PhysicsObject):
     
-    asset = CircleAsset(50, noline, black)
+    asset = CircleAsset(50, noline, blue)
     
     def __init__(self, position):
         super().__init__(Player.asset, position)
@@ -121,7 +127,6 @@ class Ball(PhysicsObject):
         self.score = [0,0]
         self.scored = False
         self.velCollision = [0,0]
-        self.collision = False
         self.scoreTime = 0
         
     def right(self, event):
@@ -139,15 +144,12 @@ class Ball(PhysicsObject):
         if self.y >= SCREEN_HEIGHT-30:
             self.bounce()
         self.velocity[1] += GRAVITY
-        if len(self.collidingWithSprites(Player)) > 0:# and self.collision == False:
+        if len(self.collidingWithSprites(Player)) > 0:
             colliding = self.collidingWithSprites(Player)[0]
             self.velCollision = self.velocity[:]
             for x in range(2):
                 self.velocity[x] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
                 colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
-                print(self.velocity)
-                print(colliding.velocity)
-                self.collision = True
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
 #                self.bounce()
@@ -170,6 +172,7 @@ class ScoreText(Sprite):
     
     def __init__(self, position):
         super().__init__(ScoreText.asset, position)
+        self.fxcenter = self.fycenter = 0.5
         self.visible = False
         self.score = [0,0]
         self.placeScore()
@@ -201,11 +204,12 @@ class HeadSoccer(App):
         super().__init__()
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-        Sprite(Floor,(0,SCREEN_HEIGHT))
+        for x in [(0,0.5,10,SCREEN_HEIGHT), (1,0.5,10,SCREEN_HEIGHT), 
+        (0.5,1,SCREEN_WIDTH,10), (0.5,0,SCREEN_WIDTH,10)]:
+            Border(RectangleAsset(x[2], x[3], noline, black), (x[0]*SCREEN_WIDTH,x[1]*SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-#        self.getSpritesbyClass(ScoreText)[0].placeScore()
         self.start = time()
         self.elapsed = 0
         
@@ -216,7 +220,8 @@ class HeadSoccer(App):
     def timeGame(self):
         self.elapsed = time()-self.start
         classDestroy(TimeText)
-        TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),(SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
+        TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),
+        (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
         self.timeGame()
