@@ -20,7 +20,7 @@ def classDestroy(sclass):
         for x in HeadSoccer.getSpritesbyClass(sclass):
             x.destroy()
 
-GRAVITY = 0.5
+GRAVITY = 25
 
 Floor = RectangleAsset(SCREEN_WIDTH, 10, noline, black)
 
@@ -63,9 +63,9 @@ class Player(PhysicsObject):
     
     def __init__(self, position):
         super().__init__(Player.asset, position)
-        self.mag = 1
-        self.speed = 5
-        self.jumpForce = 15
+        self.mag = 50
+        self.speed = 200
+        self.jumpForce = 500
         self.mass = 2
         HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
@@ -114,7 +114,7 @@ class Ball(PhysicsObject):
     
     def __init__(self, position):
         super().__init__(Ball.asset, position)
-        self.mag = 1
+        self.mag = 42
         self.mass = 1
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
@@ -199,7 +199,7 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        #Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
+        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         Sprite(Floor,(0,SCREEN_HEIGHT))
         Goal((0,SCREEN_HEIGHT-200))
