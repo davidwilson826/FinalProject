@@ -207,7 +207,7 @@ class HeadSoccer(App):
         super().__init__()
         for x in range(9):
             Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
-            (x%3*SCREEN_WIDTH+(SCREEN_WIDTH/6),x//3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
+            (SCREEN_WIDTH/(x%3)+(SCREEN_WIDTH/6),SCREEN_HEIGHT/(x//3)+(SCREEN_HEIGHT/6)))
         
     def prepGame(self):
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
