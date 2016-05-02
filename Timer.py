@@ -9,7 +9,9 @@ class Timer(App):
         self.deltaTime = 0
         
     def step(self):
+        self.frameTime[0] = self.frameTime[1]
+        self.frameTime[1] = time()
         self.deltaTime = self.frameTime[1]-self.frameTime[0]
-        print(self.deltaTime)
+        print(round(self.deltaTime,10))
         
 Timer().run()
