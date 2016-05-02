@@ -5,6 +5,8 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
+#Buttons not centered
+
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
@@ -28,6 +30,7 @@ class Button(Sprite):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
+        self.fxcenter = self.fycenter = 0.5
 
 class Border(Sprite):
     
@@ -211,6 +214,7 @@ class HeadSoccer(App):
         self.listenKeyEvent('keydown', 'space', self.prepGame)
         
     def prepGame(self, event):
+        classDestroy(Button)
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
