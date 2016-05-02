@@ -212,6 +212,9 @@ class HeadSoccer(App):
             Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
             ((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
         self.listenKeyEvent('keydown', 'space', self.prepGame)
+        self.start = 0
+        self.elapsed = 0
+        self.go = False
         
     def prepGame(self, event):
         classDestroy(Button)
@@ -225,6 +228,7 @@ class HeadSoccer(App):
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
         self.elapsed = 0
+        self.go = True
         
     def classStep(self, sclass):
         for x in self.getSpritesbyClass(sclass):
@@ -237,9 +241,10 @@ class HeadSoccer(App):
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
-        self.timeGame()
-        self.classStep(Ball)
-        self.classStep(Player)
-        self.classStep(PlayerCover)
+        if self.go == True:
+            self.timeGame()
+            self.classStep(Ball)
+            self.classStep(Player)
+            self.classStep(PlayerCover)
     
 HeadSoccer().run()
