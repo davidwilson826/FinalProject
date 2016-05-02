@@ -211,7 +211,7 @@ class HeadSoccer(App):
         for x in range(9):
             Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
             ((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
-        self.listenKeyEvent('keydown', 'space', self.prepGame)
+        self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
         self.elapsed = 0
         self.go = False
