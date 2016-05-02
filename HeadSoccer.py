@@ -24,6 +24,11 @@ def classDestroy(sclass):
 
 GRAVITY = 25
 
+class Button(Sprite):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+
 class Border(Sprite):
     
     def __init__(self, asset, position):
@@ -200,10 +205,15 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
+        for x in range(9):
+            Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
+            (0,0))
+        
+    def prepGame(self):
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
-        (0,SCREEN_HEIGHT-5,SCREEN_WIDTH,10), (0,0,SCREEN_WIDTH,10)]:
+        (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
             Border(RectangleAsset(x[2], x[3], noline, black), (x[0],x[1]))
         Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
