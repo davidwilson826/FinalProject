@@ -216,9 +216,7 @@ class HeadSoccer(App):
         Border(RectangleAsset(10,10,noline,black), (SCREEN_WIDTH,SCREEN_HEIGHT/2))#DELETE ONCE DONE#
         self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
-        self.elapsed = 0
         self.go = False
-        self.placeholder = ''
         
     def prepGame(self, event):
         classDestroy(Button)
@@ -231,7 +229,6 @@ class HeadSoccer(App):
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
-        self.elapsed = 0
         self.go = True
         
     def classStep(self, sclass):
@@ -239,14 +236,13 @@ class HeadSoccer(App):
             x.step()
             
     def timeGame(self):
-        self.elapsed = time()-self.start
-        classDestroy(TimeText)
-        if self.elapsed%60 < 10:
-            self.placeholder = '0'
+        elapsed = time()-self.start
+        seconds = elapsed%60
+        if seconds < 10:
+            placeholder = ':0'
         else:
-            self.placeholder = ''
-        TimeText(TextAsset(str(int(self.elapsed//60))+':'+self.placeholder+str(int(self.elapsed%60))),
-        (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
+            placeholder = ':'
+        TimeText(TextAsset(str(int(elapsed//60))+placeholder+str(int(seconds))), (200,200))
         
     def step(self):
         if self.go == True:
