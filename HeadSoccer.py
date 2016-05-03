@@ -213,12 +213,13 @@ class HeadSoccer(App):
             Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
             ((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
             print((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6))
-        Border(RectangleAsset(10,10,noline,black), (SCREEN_WIDTH,SCREEN_HEIGHT/2))#DELETE ONCE DONE#
+        Border(RectangleAsset(10,10,noline,black), (SCREEN_WIDTH,SCREEN_HEIGHT/2))#DELETE ONCE DONE
         self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
         self.go = False
         
     def prepGame(self, event):
+        self.unlistenMouseEvent('mousedown', self.prepGame)
         classDestroy(Button)
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
@@ -229,11 +230,8 @@ class HeadSoccer(App):
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
+        self.timeGame()
         self.go = True
-        
-    def classStep(self, sclass):
-        for x in self.getSpritesbyClass(sclass):
-            x.step()
             
     def timeGame(self):
         elapsed = time()-self.start
@@ -242,13 +240,15 @@ class HeadSoccer(App):
             placeholder = ':0'
         else:
             placeholder = ':'
-        TimeText(TextAsset(str(int(elapsed//60))+placeholder+str(int(seconds))), (200,200))
+        TimeText(TextAsset(str(int(elapsed//60))+placeholder+str(int(seconds))), 
+        (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
         if self.go == True:
+            self.getSpritesbyClass(TimeText)[0].destroy()
             self.timeGame()
-            self.classStep(Ball)
-            self.classStep(Player)
-            self.classStep(PlayerCover)
+            for x in [Ball, Player, PlayerCover]:
+                for y in self.getSpritesbyClass(x):
+                    y.step()
     
 HeadSoccer().run()
