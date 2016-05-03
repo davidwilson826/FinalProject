@@ -11,12 +11,17 @@ class Test(App):
     def __init__(self):
         super().__init__()
         self.start = time()
-        self.elapsed = 0
+        self.placeholder = ':'
         self.dispTime()
         
     def dispTime(self):
-        self.elapsed = time()-self.start
-        TimeText(TextAsset(str(self.elapsed//60)+':'+str(int(self.elapsed%60))))
+        elapsed = time()-self.start
+        seconds = elapsed%60
+        if seconds < 10:
+            placeholder = ':0'
+        else:
+            placeholder = ':'
+        TimeText(TextAsset(str(int(elapsed//60))+placeholder+str(int(seconds))), (200,200))
         
     def step(self):
         self.getSpritesbyClass(TimeText)[0].destroy()
