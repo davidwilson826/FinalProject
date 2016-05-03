@@ -6,12 +6,11 @@ class TimeText(Sprite):
     def __init__(self, asset, position):
         super().__init__(asset, position)
         
-class Test(App):
+class Timer(App):
     
     def __init__(self):
         super().__init__()
         self.start = time()
-        self.placeholder = ':'
         self.dispTime()
         
     def dispTime(self):
@@ -27,4 +26,4 @@ class Test(App):
         self.getSpritesbyClass(TimeText)[0].destroy()
         self.dispTime()
         
-Test().run()
+Timer().run()
