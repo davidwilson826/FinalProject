@@ -5,7 +5,7 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
-#Buttons not centered
+#Buttons positioned poorly
 
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
@@ -170,6 +170,7 @@ class Ball(PhysicsObject):
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
+            HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = False
             self.scored = False
 
 class ScoreText(Sprite):
@@ -211,10 +212,13 @@ class HeadSoccer(App):
         for x in range(9):
             Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
             ((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
+            print((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6))
+        Border(RectangleAsset(10,10,noline,black), (SCREEN_WIDTH,SCREEN_HEIGHT/2))#DELETE ONCE DONE#
         self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
         self.elapsed = 0
         self.go = False
+        self.placeholder = ''
         
     def prepGame(self, event):
         classDestroy(Button)
@@ -237,7 +241,11 @@ class HeadSoccer(App):
     def timeGame(self):
         self.elapsed = time()-self.start
         classDestroy(TimeText)
-        TimeText(TextAsset(str(int(self.elapsed//60))+':'+str(int(self.elapsed%60))),
+        if self.elapsed%60 < 10:
+            self.placeholder = '0'
+        else:
+            self.placeholder = ''
+        TimeText(TextAsset(str(int(self.elapsed//60))+':'+self.placeholder+str(int(self.elapsed%60))),
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
