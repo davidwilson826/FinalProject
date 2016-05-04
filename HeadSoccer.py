@@ -248,6 +248,7 @@ class HeadSoccer(App):
             global deltaTime
             deltaTime = time()-self.frameTime
             self.frameTime = time()
+            print(deltaTime)
             for x in [Ball, Player, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
                     y.step()
