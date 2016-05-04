@@ -205,10 +205,10 @@ class HeadSoccer(App):
     def __init__(self):
         super().__init__()
         for x in range(9):
-            Button(RectangleAsset(SCREEN_WIDTH*(2/9), SCREEN_HEIGHT*(2/9), noline, blue),
-            ((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6)))
-            print((x%3)/3*SCREEN_WIDTH+(SCREEN_WIDTH/6),(x//3)/3*SCREEN_HEIGHT+(SCREEN_HEIGHT/6))
-        Border(RectangleAsset(10,10,noline,black), (SCREEN_WIDTH,SCREEN_HEIGHT/2))#DELETE ONCE DONE
+            width = 0.2*SCREEN_WIDTH
+            height = 0.2*SCREEN_HEIGHT
+            Button(RectangleAsset(width, height, noline, black), 
+            ((x//3+1)/4*SCREEN_WIDTH-width/2,(x%3+1)/4*SCREEN_HEIGHT-height/2))
         self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
         self.go = False
