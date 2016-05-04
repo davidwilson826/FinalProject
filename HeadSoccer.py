@@ -52,15 +52,10 @@ class PhysicsObject(Sprite):
         self.velocity = [0,0]
         self.fxcenter = self.fycenter = 0.5
         self.circularCollisionModel()
-        self.frameTime = [time(),time()]
-        self.deltaTime = 0
         
     def step(self):
-        self.frameTime[0] = self.frameTime[1]
-        self.frameTime[1] = time()
-        self.deltaTime = self.frameTime[1]-self.frameTime[0]
-        self.x += self.velocity[0]*self.deltaTime
-        self.y += self.velocity[1]*self.deltaTime
+        self.x += self.velocity[0]*deltaTime
+        self.y += self.velocity[1]*deltaTime
         
 class Experiment(PhysicsObject):
     
@@ -217,6 +212,8 @@ class HeadSoccer(App):
         self.listenMouseEvent('mousedown', self.prepGame)
         self.start = 0
         self.go = False
+        self.frameTime = 0
+        self.deltaTime = 0
         
     def prepGame(self, event):
         self.unlistenMouseEvent('mousedown', self.prepGame)
@@ -231,6 +228,7 @@ class HeadSoccer(App):
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
         self.timeGame()
+        self.frameTime = time()
         self.go = True
             
     def timeGame(self):
@@ -247,6 +245,9 @@ class HeadSoccer(App):
         if self.go == True:
             self.getSpritesbyClass(TimeText)[0].destroy()
             self.timeGame()
+            global deltaTime
+            deltaTime = time()-self.frameTime
+            self.frameTime = time()
             for x in [Ball, Player, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
                     y.step()
