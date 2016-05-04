@@ -17,7 +17,14 @@ class Test(App):
     
     def __init__(self):
         super().__init__()
-        Button(RectangleAsset(SCREEN_WIDTH, 5, noLine, black), (SCREEN_WIDTH/2, SCREEN_HEIGHT))
-        Button(RectangleAsset(5, SCREEN_HEIGHT, noLine, black), (SCREEN_WIDTH, SCREEN_HEIGHT/2))
+        Button(RectangleAsset(SCREEN_WIDTH, 5, noLine, black), (0, SCREEN_HEIGHT-2.5))
+        Button(RectangleAsset(5, SCREEN_HEIGHT, noLine, black), (SCREEN_WIDTH-2.5, 0))
         for x in range(9):
-            Button(RectangleAsset(20, 20, noLine, black), (0,0))
+            width = 0.2*SCREEN_WIDTH
+            height = 0.2*SCREEN_HEIGHT
+            Button(RectangleAsset(width, height, noLine, black), 
+            ((x//3+1)/4*SCREEN_WIDTH-width/2,(x%3+1)/4*SCREEN_HEIGHT-height/2))
+        for x in self.getSpritesbyClass(Button)[2:]:
+            print(x.x,x.y)
+            
+Test().run()
