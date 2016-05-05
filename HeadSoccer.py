@@ -5,8 +5,6 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
-#Buttons positioned poorly
-
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
@@ -16,8 +14,10 @@ SCREEN_HEIGHT = 600
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
 blue = Color(0x0000ff, 1.0)
+beige = Color(0xF5F5DC, 1.0)
 
 noline = LineStyle(0.0, black)
+thinline = LineStyle(1.0, black)
 
 def classDestroy(sclass):
     while len(HeadSoccer.getSpritesbyClass(sclass)) > 0:
@@ -204,19 +204,26 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        for x in range(9):
-            width = 0.2*SCREEN_WIDTH
-            height = 0.2*SCREEN_HEIGHT
-            Button(RectangleAsset(width, height, noline, black), 
-            ((x//3+1)/4*SCREEN_WIDTH-width/2,(x%3+1)/4*SCREEN_HEIGHT-height/2))
-        self.listenMouseEvent('mousedown', self.prepGame)
+        self.width = 0.2*SCREEN_WIDTH
+        self.height = 0.2*SCREEN_HEIGHT
+        self.buttons = [((x%3+1)/4*SCREEN_WIDTH-self.width/2, 
+        (x//3+1)/4*SCREEN_HEIGHT-self.height/2) for x in range(9)]
+        for x in self.buttons:
+            Button(RectangleAsset(self.width, self.height, thinline, beige), (x[0],x[1]))
+        self.listenMouseEvent('mousedown', self.buttonClick)
         self.start = 0
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
         
-    def prepGame(self, event):
-        self.unlistenMouseEvent('mousedown', self.prepGame)
+    def buttonClick(self, event):
+        for x in self.buttons:
+            if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
+                print(self.buttons.index(x))
+                self.prepGame()
+        
+    def prepGame(self):
+        self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
         Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
@@ -248,7 +255,6 @@ class HeadSoccer(App):
             global deltaTime
             deltaTime = time()-self.frameTime
             self.frameTime = time()
-            print(deltaTime)
             for x in [Ball, Player, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
                     y.step()
