@@ -127,7 +127,6 @@ class Ball(PhysicsObject):
         self.mass = 1
         HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
         HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
-        self.score = [0,0]
         self.scored = False
         self.velCollision = [0,0]
         self.scoreTime = 0
@@ -182,17 +181,18 @@ class ScoreText(Sprite):
         super().__init__(ScoreText.asset, position)
         self.fxcenter = self.fycenter = 0.5
         self.visible = False
-        self.score = [0,0]
+        global score
+        score = [0,0]
         self.placeScore()
         
     def goal(self, Goal):
-        self.score[Goal.ident] += 1
+        score[Goal.ident] += 1
         self.placeScore()
         
     def placeScore(self):
         classDestroy(ScoreNum)
-        ScoreNum(TextAsset(self.score[0]), (SCREEN_WIDTH/8,SCREEN_HEIGHT/2))
-        ScoreNum(TextAsset(self.score[1]), (SCREEN_WIDTH*(7/8),SCREEN_HEIGHT/2))
+        ScoreNum(TextAsset(score[0]), (SCREEN_WIDTH/8,SCREEN_HEIGHT/2))
+        ScoreNum(TextAsset(score[1]), (SCREEN_WIDTH*(7/8),SCREEN_HEIGHT/2))
         
 class ScoreNum(Sprite):
     
@@ -208,10 +208,8 @@ class TimeText(Sprite):
         
 class TimeUpText(Sprite):
     
-    asset = TextAsset("Time's Up!")
-    
-    def __init__(self, position):
-        super().__init__(TimeUpText.asset, position)
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
         self.fxcenter = self.fycenter = 0.5
 
 class HeadSoccer(App):
@@ -250,8 +248,8 @@ class HeadSoccer(App):
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
             Border(RectangleAsset(x[2], x[3], noline, black), (x[0],x[1]))
-        Goal((0,SCREEN_HEIGHT-200))
         Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
+        Goal((0,SCREEN_HEIGHT-200))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
         self.timeGame()
@@ -262,7 +260,13 @@ class HeadSoccer(App):
         remaining = self.gameTime-time()+self.start
         if remaining < 0:
             remaining = 0
-            TimeUpText((SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
+            if score[0] > score[1]:
+                winner = 'Player 1 wins!'
+            elif score[1] > score[0]:
+                winner = 'Player 2 wins!'
+            else:
+                winner = "It's a draw!"
+            TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
             self.go = False
         seconds = remaining%60
         if seconds < 10:
