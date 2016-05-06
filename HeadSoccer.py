@@ -5,11 +5,13 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
+#Delete frameRate?
+
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 700
 
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
@@ -215,6 +217,11 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
+        self.frameTimes = []
+        self.listenKeyEvent('keydown', 'z', self.frameRate)
+        
+    def frameRate(self, event):
+        print(1/(sum(self.frameTimes)/len(self.frameTimes)))
         
     def buttonClick(self, event):
         for x in self.buttons:
@@ -254,6 +261,7 @@ class HeadSoccer(App):
             self.timeGame()
             global deltaTime
             deltaTime = time()-self.frameTime
+            self.frameTimes.append(deltaTime)
             self.frameTime = time()
             for x in [Ball, Player, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
