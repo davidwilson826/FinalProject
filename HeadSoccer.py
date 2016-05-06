@@ -167,6 +167,10 @@ class Ball(PhysicsObject):
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
+            player1 = HeadSoccer.getSpritesbyClass(Player)[0]
+            player1.x = SCREEN_WIDTH/4
+            player1.y = SCREEN_HEIGHT
+            player1.velocity = [0,0]
             HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = False
             self.scored = False
 
@@ -201,6 +205,14 @@ class TimeText(Sprite):
     def __init__(self, asset, position):
         super().__init__(asset, position)
         self.fxcenter = self.fycenter = 0.5
+        
+class TimeUpText(Sprite):
+    
+    asset = TextAsset("Time's Up!")
+    
+    def __init__(self, position):
+        super().__init__(TimeUpText.asset, position)
+        self.fxcenter = self.fycenter = 0.5
 
 class HeadSoccer(App):
 
@@ -217,7 +229,7 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 60
+        self.gameTime = 3
         self.frameTimes = []
         self.listenKeyEvent('keydown', 'z', self.frameRate)
         
@@ -233,7 +245,7 @@ class HeadSoccer(App):
     def prepGame(self):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
-        Player((SCREEN_WIDTH/2,SCREEN_HEIGHT))
+        Player((SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
@@ -248,6 +260,10 @@ class HeadSoccer(App):
             
     def timeGame(self):
         remaining = self.gameTime-time()+self.start
+        if remaining < 0:
+            remaining = 0
+            TimeUpText((SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
+            self.go = False
         seconds = remaining%60
         if seconds < 10:
             placeholder = ':0'
