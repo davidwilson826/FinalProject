@@ -217,6 +217,7 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
+        self.gameTime = 60
         self.frameTimes = []
         self.listenKeyEvent('keydown', 'z', self.frameRate)
         
@@ -246,13 +247,13 @@ class HeadSoccer(App):
         self.go = True
             
     def timeGame(self):
-        elapsed = time()-self.start
-        seconds = elapsed%60
+        remaining = self.gameTime-time()+self.start
+        seconds = remaining%60
         if seconds < 10:
             placeholder = ':0'
         else:
             placeholder = ':'
-        TimeText(TextAsset(str(int(elapsed//60))+placeholder+str(int(seconds))), 
+        TimeText(TextAsset(str(int(remaining//60))+placeholder+str(int(seconds))), 
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def step(self):
