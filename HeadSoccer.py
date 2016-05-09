@@ -54,8 +54,8 @@ class PhysicsObject(Sprite):
   
     def __init__(self, asset, position):
         super().__init__(asset, position)
-        self.velocity = [0,0]
         self.fxcenter = self.fycenter = 0.5
+        self.velocity = [0,0]
         self.circularCollisionModel()
         
     def step(self):
@@ -108,14 +108,14 @@ class Player(PhysicsObject):
             
 class PlayerCover(Sprite):
     
-    asset = RectangleAsset(100, 50, noline, white)
+    asset = RectangleAsset(102, 52, noline, white)
     
     def __init__(self, position):
         super().__init__(PlayerCover.asset, position)
         
     def step(self):
         for x in HeadSoccer.getSpritesbyClass(Player):
-            self.x = x.x-50
+            self.x = x.x-51
             self.y = x.y
         
 class Ball(PhysicsObject):
@@ -146,6 +146,8 @@ class Ball(PhysicsObject):
         super().step()
         if self.y >= SCREEN_HEIGHT-30:
             self.bounce()
+        if self.x <= 30 or self.x >= SCREEN_WIDTH-30:
+            self.velocity[0] *= -1
         self.velocity[1] += GRAVITY
         if len(self.collidingWithSprites(Player)) > 0:
             colliding = self.collidingWithSprites(Player)[0]
@@ -229,7 +231,7 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 10
+        self.gameTime = 60
         self.frameTimes = []
         self.listenKeyEvent('keydown', 'z', self.frameRate)
         
@@ -244,7 +246,7 @@ class HeadSoccer(App):
     def prepGame(self, color):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
-        Player(CircleAsset(50, noline, color), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
+        Player(CircleAsset(50, thinline, color), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
