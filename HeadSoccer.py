@@ -5,8 +5,6 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
-#Delete frameRate?
-
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
@@ -268,7 +266,10 @@ class HeadSoccer(App):
             else:
                 winner = "It's a draw!"
             TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
+            TimeUpText(TextAsset("Press Space to Restart"), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)#, width=SCREEN_WIDTH)
+            self.getSpritesbyClass(ScoreText)[0].destroy()
             self.go = False
+            self.listenKeyEvent('keydown', 'space', self.restart)
         seconds = remaining%60
         if seconds < 10:
             placeholder = ':0'
@@ -276,6 +277,12 @@ class HeadSoccer(App):
             placeholder = ':'
         TimeText(TextAsset(str(int(remaining//60))+placeholder+str(int(seconds))), 
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
+        
+    def restart(self, event):
+        for x in [Ball, Player, PlayerCover, Goal, Border, TimeUpText, TimeText]:
+            for y in self.getSpritesbyClass(x):
+                y.destroy()
+        self.placeButtons()
         
     def step(self):
         if self.go == True:
