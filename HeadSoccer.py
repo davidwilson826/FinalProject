@@ -15,8 +15,11 @@ SCREEN_HEIGHT = 700
 
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
-blue = Color(0x0000ff, 1.0)
 beige = Color(0xF5F5DC, 1.0)
+
+blue = Color(0x0000ff, 1.0)
+green = Color(0x00ff00, 1.0)
+red = Color(0xff0000, 1.0)
 
 noline = LineStyle(0.0, black)
 thinline = LineStyle(1.0, black)
@@ -69,10 +72,8 @@ class Experiment(PhysicsObject):
         
 class Player(PhysicsObject):
     
-    asset = CircleAsset(50, noline, blue)
-    
-    def __init__(self, position):
-        super().__init__(Player.asset, position)
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
         self.mag = 50
         self.speed = 200
         self.jumpForce = 500
@@ -218,10 +219,11 @@ class HeadSoccer(App):
         super().__init__()
         self.width = 0.2*SCREEN_WIDTH
         self.height = 0.2*SCREEN_HEIGHT
+        self.buttoncolors = [blue, red, green]*3
         self.buttons = [((x%3+1)/4*SCREEN_WIDTH-self.width/2, 
-        (x//3+1)/4*SCREEN_HEIGHT-self.height/2) for x in range(9)]
+        (x//3+1)/4*SCREEN_HEIGHT-self.height/2, self.buttoncolors[x]) for x in range(9)]
         for x in self.buttons:
-            Button(RectangleAsset(self.width, self.height, thinline, beige), (x[0],x[1]))
+            Button(RectangleAsset(self.width, self.height, thinline, x[2]), (x[0],x[1]))
         self.listenMouseEvent('mousedown', self.buttonClick)
         self.start = 0
         self.go = False
@@ -237,13 +239,12 @@ class HeadSoccer(App):
     def buttonClick(self, event):
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
-                print(self.buttons.index(x))
-                self.prepGame()
+                self.prepGame(x[2])
         
-    def prepGame(self):
+    def prepGame(self, color):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
-        Player((SCREEN_WIDTH/4,SCREEN_HEIGHT))
+        Player(CircleAsset(50, noline, color), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
