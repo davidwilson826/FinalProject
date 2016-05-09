@@ -224,14 +224,17 @@ class HeadSoccer(App):
         self.buttoncolors = [blue, red, green]*3
         self.buttons = [((x%3+1)/4*SCREEN_WIDTH-self.width/2, 
         (x//3+1)/4*SCREEN_HEIGHT-self.height/2, self.buttoncolors[x]) for x in range(9)]
-        for x in self.buttons:
-            Button(RectangleAsset(self.width, self.height, thinline, x[2]), (x[0],x[1]))
-        self.listenMouseEvent('mousedown', self.buttonClick)
         self.start = 0
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
         self.gameTime = 60
+        self.placeButtons()
+    
+    def placeButtons(self):
+        for x in self.buttons:
+            Button(RectangleAsset(self.width, self.height, thinline, x[2]), (x[0],x[1]))
+        self.listenMouseEvent('mousedown', self.buttonClick)
         
     def buttonClick(self, event):
         for x in self.buttons:
