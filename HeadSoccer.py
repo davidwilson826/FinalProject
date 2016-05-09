@@ -232,11 +232,6 @@ class HeadSoccer(App):
         self.frameTime = 0
         self.deltaTime = 0
         self.gameTime = 60
-        self.frameTimes = []
-        self.listenKeyEvent('keydown', 'z', self.frameRate)
-        
-    def frameRate(self, event):
-        print(1/(sum(self.frameTimes)/len(self.frameTimes)))
         
     def buttonClick(self, event):
         for x in self.buttons:
@@ -285,7 +280,6 @@ class HeadSoccer(App):
             self.timeGame()
             global deltaTime
             deltaTime = time()-self.frameTime
-            self.frameTimes.append(deltaTime)
             self.frameTime = time()
             for x in [Ball, Player, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
