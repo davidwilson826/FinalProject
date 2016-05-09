@@ -5,6 +5,8 @@ Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-pytho
 https://www.mathsisfun.com/hexadecimal-decimal-colors.html
 '''
 
+#White block behind text sprites
+
 from ggame import App, Sprite, CircleAsset, RectangleAsset, Color, LineStyle, TextAsset
 from time import time
 
