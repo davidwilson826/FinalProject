@@ -226,7 +226,7 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 60
+        self.gameTime = 2
         self.placeButtons()
     
     def placeButtons(self):
@@ -266,7 +266,7 @@ class HeadSoccer(App):
             else:
                 winner = "It's a draw!"
             TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
-            TimeUpText(TextAsset("Press Space to Restart"), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)#, width=SCREEN_WIDTH)
+            TimeUpText(TextAsset("Press Space to Restart", width=SCREEN_WIDTH), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             self.getSpritesbyClass(ScoreText)[0].destroy()
             self.go = False
             self.listenKeyEvent('keydown', 'space', self.restart)
@@ -279,9 +279,9 @@ class HeadSoccer(App):
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
     def restart(self, event):
-        for x in [Ball, Player, PlayerCover, Goal, Border, TimeUpText, TimeText]:
-            for y in self.getSpritesbyClass(x):
-                y.destroy()
+        self.unlistenKeyEvent('keydown', 'space', self.restart)
+        for x in [Ball, Player, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
+            classDestroy(x)
         self.placeButtons()
         
     def step(self):
