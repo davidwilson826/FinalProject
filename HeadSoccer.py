@@ -233,6 +233,10 @@ class HeadSoccer(App):
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
         self.intro = True
+        self.transparency = 1
+        self.direction = 0
+        IntroText(TextAsset('Click to Continue', width=SCREEN_WIDTH, style='20pt Helvetica',
+        fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
     
     def placeButtonsEvent(self, event):
         self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
@@ -296,14 +300,15 @@ class HeadSoccer(App):
         
     def step(self):
         if self.intro == True:
-            self.getSpritesbyClass(IntroText)[1].destroy()
-            if transparency == 1:
-                direction = -1
+            #self.getSpritesbyClass(IntroText)[1].destroy()
+            if self.transparency == 1:
+                self.direction = -0.1
             elif transparency == 0:
-                direction = 1
-            transparency += direction
-            IntroText(TextAsset('Click to Continue', width=SCREEN_WIDTH, style='20pt Helvetica',
-            fill=(0x000000, transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+                self.direction = 0.1
+            self.transparency += self.direction
+            print(self.transparency)
+            #IntroText(TextAsset('Click to Continue', width=SCREEN_WIDTH, style='20pt Helvetica',
+            #fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         if self.go == True:
             self.getSpritesbyClass(TimeText)[0].destroy()
             self.timeGame()
