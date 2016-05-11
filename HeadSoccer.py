@@ -2,7 +2,7 @@
 Head Soccer
 Author: David Wilson
 Credit: http://stackoverflow.com/questions/7370801/measure-time-elapsed-in-python,
-https://www.mathsisfun.com/hexadecimal-decimal-colors.html
+https://www.mathsisfun.com/hexadecimal-decimal-colors.html, http://brythonserver.github.io/ggame/
 '''
 
 #White block behind text sprites
@@ -197,23 +197,23 @@ class ScoreText(Sprite):
         ScoreNum(TextAsset(score[0]), (SCREEN_WIDTH/8,SCREEN_HEIGHT/2))
         ScoreNum(TextAsset(score[1]), (SCREEN_WIDTH*(7/8),SCREEN_HEIGHT/2))
         
-class ScoreNum(Sprite):
+class TextSprite(Sprite):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
         self.fxcenter = self.fycenter = 0.5
         
-class TimeText(Sprite):
-    
-    def __init__(self, asset, position):
-        super().__init__(asset, position)
-        self.fxcenter = self.fycenter = 0.5
+class IntroText(TextSprite):
+    pass
         
-class TimeUpText(Sprite):
-    
-    def __init__(self, asset, position):
-        super().__init__(asset, position)
-        self.fxcenter = self.fycenter = 0.5
+class ScoreNum(TextSprite):
+    pass
+        
+class TimeText(TextSprite):
+    pass
+        
+class TimeUpText(TextSprite):
+    pass
 
 class HeadSoccer(App):
 
@@ -228,7 +228,15 @@ class HeadSoccer(App):
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 2
+        self.gameTime = 60
+        IntroText(TextAsset('Head Soccer', width=SCREEN_WIDTH, align='center',
+        style='50pt Helvetica'), (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
+        self.listenMouseEvent('mousedown', self.placeButtonsEvent)
+        #self.placeButtons()
+    
+    def placeButtonsEvent(self, event):
+        self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
+        self.getSpritesbyClass(IntroText)[0].destroy()
         self.placeButtons()
     
     def placeButtons(self):
