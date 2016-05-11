@@ -14,3 +14,5 @@ class Transparency(App):
             self.direction = 0.1
         self.transparency += self.direction
         print(self.transparency)
+        
+Transparency().run()
