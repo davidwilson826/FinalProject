@@ -13,6 +13,7 @@ class Transparency(App):
         elif self.transparency == 0:
             self.direction = 0.1
         self.transparency += self.direction
+        self.transparency = int(self.transparency)
         print(self.transparency)
         
 Transparency().run()
