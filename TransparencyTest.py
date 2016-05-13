@@ -17,11 +17,11 @@ class Transparency(App):
         TextSprite(TextAsset('Click to Continue', fill=Color(0x000000, self.transparency), 
         width=500), (200,200))
         if self.transparency == 1:
-            self.direction = -0.1
+            self.direction = -0.02
         elif self.transparency == 0:
-            self.direction = 0.1
+            self.direction = 0.02
         self.transparency += self.direction
-        self.transparency = round(self.transparency, 1)
+        self.transparency = round(self.transparency, 2)
         #print(self.transparency)
         
 Transparency().run()
