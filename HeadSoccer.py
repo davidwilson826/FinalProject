@@ -78,11 +78,6 @@ class Player(PhysicsObject):
         self.speed = 200
         self.jumpForce = 500
         self.mass = 2
-        HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
-        HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
-        HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
-        HeadSoccer.listenKeyEvent('keyup', 'a', self.stop)
-        HeadSoccer.listenKeyEvent('keydown', 'w', self.jump)
         PlayerCover((0,0))
         
     def right(self, event):
@@ -105,6 +100,16 @@ class Player(PhysicsObject):
         elif self.y >= SCREEN_HEIGHT:
             self.velocity[1] = 0
             self.y = SCREEN_HEIGHT
+            
+class Player1(Player):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+        HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
+        HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
+        HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
+        HeadSoccer.listenKeyEvent('keyup', 'a', self.stop)
+        HeadSoccer.listenKeyEvent('keydown', 'w', self.jump)
             
 class PlayerCover(Sprite):
     
@@ -255,7 +260,7 @@ class HeadSoccer(App):
     def prepGame(self, color):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
-        Player(CircleAsset(50, thinline, color), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
+        Player1(CircleAsset(50, thinline, color), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
