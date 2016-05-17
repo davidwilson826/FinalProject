@@ -154,12 +154,13 @@ class Ball(PhysicsObject):
         if self.x <= 30 or self.x >= SCREEN_WIDTH-30:
             self.velocity[0] *= -1
         self.velocity[1] += GRAVITY
-        if len(self.collidingWithSprites(Player)) > 0:
-            colliding = self.collidingWithSprites(Player)[0]
-            self.velCollision = self.velocity[:]
-            for x in range(2):
-                self.velocity[x] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
-                colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+        for x in [Player1]:
+            if len(self.collidingWithSprites(x)) > 0:
+                colliding = self.collidingWithSprites(x)[0]
+                self.velCollision = self.velocity[:]
+                for x in range(2):
+                    self.velocity[x] = (self.mass-colliding.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
+                    colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
 #                self.bounce()
@@ -174,7 +175,7 @@ class Ball(PhysicsObject):
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
-            player1 = HeadSoccer.getSpritesbyClass(Player)[0]
+            player1 = HeadSoccer.getSpritesbyClass(Player1)[0]
             player1.x = SCREEN_WIDTH/4
             player1.y = SCREEN_HEIGHT
             player1.velocity = [0,0]
@@ -298,7 +299,7 @@ class HeadSoccer(App):
         
     def restart(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.restart)
-        for x in [Ball, Player, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
+        for x in [Ball, Player1, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
             classDestroy(x)
         self.placeButtons()
         
@@ -319,7 +320,7 @@ class HeadSoccer(App):
             global deltaTime
             deltaTime = time()-self.frameTime
             self.frameTime = time()
-            for x in [Ball, Player, PlayerCover]:
+            for x in [Ball, Player1, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
                     y.step()
     
