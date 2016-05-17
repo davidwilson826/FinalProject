@@ -78,11 +78,6 @@ class Player(PhysicsObject):
         self.speed = 200
         self.jumpForce = 500
         self.mass = 2
-        HeadSoccer.listenKeyEvent('keydown', self.keys[0], self.left)
-        HeadSoccer.listenKeyEvent('keydown', self.keys[1], self.right)
-        HeadSoccer.listenKeyEvent('keyup', self.keys[0], self.stop)
-        HeadSoccer.listenKeyEvent('keyup', self.keys[1], self.stop)
-        HeadSoccer.listenKeyEvent('keydown', self.keys[2], self.jump)
         PlayerCover((0,0))
         
     def right(self, event):
@@ -110,14 +105,22 @@ class Player1(Player):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
-        self.keys = ['a','d','w']
+        HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
+        HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
+        HeadSoccer.listenKeyEvent('keyup', 'a', self.stop)
+        HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
+        HeadSoccer.listenKeyEvent('keydown', 'w', self.jump)
         
-class Player1(Player):
+class Player2(Player):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
-        self.keys = ['left arrow','right arrow','up arrow']
-            
+        HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
+        HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
+        HeadSoccer.listenKeyEvent('keyup', 'left arrow', self.stop)
+        HeadSoccer.listenKeyEvent('keyup', 'right arrow', self.stop)
+        HeadSoccer.listenKeyEvent('keydown', 'up arrow', self.jump)
+        
 class PlayerCover(Sprite):
     
     asset = RectangleAsset(102, 52, noline, white)
