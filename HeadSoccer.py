@@ -268,7 +268,7 @@ class HeadSoccer(App):
     def buttonClick(self, event):
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
-                self.colors += x[2]
+                self.colors.append(x[2])
                 if len(self.colors) == 2:
                     self.prepGame(self.colors)
         
@@ -277,6 +277,7 @@ class HeadSoccer(App):
         classDestroy(Button)
         Player1(CircleAsset(50, thinline, colors[0]), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Player2(CircleAsset(50, thinline, colors[1]), (SCREEN_WIDTH*3/4,SCREEN_HEIGHT))
+        self.getSpritesbyClass(PlayerCover)[1].follow = Player2
         Ball((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
@@ -314,7 +315,7 @@ class HeadSoccer(App):
         
     def restart(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.restart)
-        for x in [Ball, Player1, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
+        for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
             classDestroy(x)
         self.placeButtons()
         
@@ -335,7 +336,7 @@ class HeadSoccer(App):
             global deltaTime
             deltaTime = time()-self.frameTime
             self.frameTime = time()
-            for x in [Ball, Player1, PlayerCover]:
+            for x in [Ball, Player1, Player2, PlayerCover]:
                 for y in self.getSpritesbyClass(x):
                     y.step()
     
