@@ -62,14 +62,6 @@ class PhysicsObject(Sprite):
         self.x += self.velocity[0]*deltaTime
         self.y += self.velocity[1]*deltaTime
         
-class Experiment(PhysicsObject):
-    
-    asset = CircleAsset(10, noline, black)
-    
-    def __init__(self, position):
-        super().__init__(Experiment.asset, self)
-        self.velocity = [5,0]
-        
 class Player(PhysicsObject):
     
     def __init__(self, asset, position):
@@ -94,6 +86,8 @@ class Player(PhysicsObject):
             self.velocity[1] = -self.jumpForce
             
     def step(self):
+#        if self.x <= 25 or self.x >= SCREEN_WIDTH-25:
+#            self.velocity[0] = 0
         super().step()
         if self.y < SCREEN_HEIGHT:
             self.velocity[1] += GRAVITY
@@ -222,6 +216,9 @@ class TextSprite(Sprite):
         super().__init__(asset, position)
         self.fxcenter = self.fycenter = 0.5
         
+class TitleText(TextSprite):
+    pass
+        
 class IntroText(TextSprite):
     pass
         
@@ -248,7 +245,7 @@ class HeadSoccer(App):
         self.frameTime = 0
         self.deltaTime = 0
         self.gameTime = 60
-        IntroText(TextAsset('Head Soccer', width=SCREEN_WIDTH, style='50pt Helvetica'), 
+        TitleText(TextAsset('Head Soccer!', width=SCREEN_WIDTH, style='50pt Helvetica'), 
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
         self.intro = True
@@ -259,6 +256,7 @@ class HeadSoccer(App):
     def placeButtonsEvent(self, event):
         self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
         self.intro = False
+        self.getSpritesbyClass(TitleText)[0].destroy()
         self.getSpritesbyClass(IntroText)[0].destroy()
         self.placeButtons()
     
@@ -270,8 +268,8 @@ class HeadSoccer(App):
     def buttonClick(self, event):
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
-                self.colors.append(x[2])
-                if len(self.colors) == 2:
+                self.playercolors.append(x[2])
+                if len(self.playercolors) == 2:
                     self.prepGame(self.playercolors)
         
     def prepGame(self, colors):
