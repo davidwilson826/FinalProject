@@ -165,7 +165,7 @@ class Ball(PhysicsObject):
         if self.x <= 30 or self.x >= SCREEN_WIDTH-30:
             self.velocity[0] *= -1
         self.velocity[1] += GRAVITY
-        for x in [Player1]:
+        for x in [Player1, Player2]:
             if len(self.collidingWithSprites(x)) > 0:
                 colliding = self.collidingWithSprites(x)[0]
                 self.velCollision = self.velocity[:]
@@ -186,10 +186,12 @@ class Ball(PhysicsObject):
             self.velocity = [0,0]
             self.x = SCREEN_WIDTH/2
             self.y = SCREEN_HEIGHT/2
-            player1 = HeadSoccer.getSpritesbyClass(Player1)[0]
-            player1.x = SCREEN_WIDTH/4
-            player1.y = SCREEN_HEIGHT
-            player1.velocity = [0,0]
+            for x in [Player1, Player2]:
+                player = HeadSoccer.getSpritesbyClass(x)[0]
+                player.x = SCREEN_WIDTH/4
+                player.y = SCREEN_HEIGHT
+                player.velocity = [0,0]
+            player.x *= 3
             HeadSoccer.getSpritesbyClass(ScoreText)[0].visible = False
             self.scored = False
 
@@ -317,6 +319,7 @@ class HeadSoccer(App):
         self.unlistenKeyEvent('keydown', 'space', self.restart)
         for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
             classDestroy(x)
+        self.colors = []
         self.placeButtons()
         
     def step(self):
