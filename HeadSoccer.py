@@ -78,6 +78,11 @@ class Player(PhysicsObject):
         self.speed = 200
         self.jumpForce = 500
         self.mass = 2
+        HeadSoccer.listenKeyEvent('keydown', self.keys[0], self.left)
+        HeadSoccer.listenKeyEvent('keydown', self.keys[1], self.right)
+        HeadSoccer.listenKeyEvent('keyup', self.keys[0], self.stop)
+        HeadSoccer.listenKeyEvent('keyup', self.keys[1], self.stop)
+        HeadSoccer.listenKeyEvent('keydown', self.keys[2], self.jump)
         PlayerCover((0,0))
         
     def right(self, event):
@@ -105,11 +110,13 @@ class Player1(Player):
     
     def __init__(self, asset, position):
         super().__init__(asset, position)
-        HeadSoccer.listenKeyEvent('keydown', 'd', self.right)
-        HeadSoccer.listenKeyEvent('keydown', 'a', self.left)
-        HeadSoccer.listenKeyEvent('keyup', 'd', self.stop)
-        HeadSoccer.listenKeyEvent('keyup', 'a', self.stop)
-        HeadSoccer.listenKeyEvent('keydown', 'w', self.jump)
+        self.keys = ['a','d','w']
+        
+class Player1(Player):
+    
+    def __init__(self, asset, position):
+        super().__init__(asset, position)
+        self.keys = ['left arrow','right arrow','up arrow']
             
 class PlayerCover(Sprite):
     
@@ -117,9 +124,10 @@ class PlayerCover(Sprite):
     
     def __init__(self, position):
         super().__init__(PlayerCover.asset, position)
+        self.follow = Player1
         
     def step(self):
-        for x in HeadSoccer.getSpritesbyClass(Player):
+        for x in HeadSoccer.getSpritesbyClass(self.follow):
             self.x = x.x-51
             self.y = x.y
         
@@ -131,8 +139,8 @@ class Ball(PhysicsObject):
         super().__init__(Ball.asset, position)
         self.mag = 42
         self.mass = 1
-        HeadSoccer.listenKeyEvent('keydown', 'right arrow', self.right)
-        HeadSoccer.listenKeyEvent('keydown', 'left arrow', self.left)
+        HeadSoccer.listenKeyEvent('keydown', 'p', self.right)
+        HeadSoccer.listenKeyEvent('keydown', 'i', self.left)
         self.scored = False
         self.velCollision = [0,0]
         self.scoreTime = 0
