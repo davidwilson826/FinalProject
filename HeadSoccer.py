@@ -254,7 +254,7 @@ class HeadSoccer(App):
         self.intro = True
         self.transparency = 1
         self.direction = 0
-        self.colors = []
+        self.playercolors = []
     
     def placeButtonsEvent(self, event):
         self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
@@ -272,7 +272,7 @@ class HeadSoccer(App):
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
                 self.colors.append(x[2])
                 if len(self.colors) == 2:
-                    self.prepGame(self.colors)
+                    self.prepGame(self.playercolors)
         
     def prepGame(self, colors):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
@@ -319,7 +319,7 @@ class HeadSoccer(App):
         self.unlistenKeyEvent('keydown', 'space', self.restart)
         for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
             classDestroy(x)
-        self.colors = []
+        self.playercolors = []
         self.placeButtons()
         
     def step(self):
