@@ -308,6 +308,8 @@ class HeadSoccer(App):
             #TimeUpText(TextAsset("Press Space to Restart", width=SCREEN_WIDTH), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             self.getSpritesbyClass(ScoreText)[0].destroy()
             self.go = False
+            self.transparency = 1
+            self.direction = 0
             self.restart = True
             self.listenKeyEvent('keydown', 'space', self.restart)
         seconds = remaining%60
