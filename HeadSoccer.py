@@ -86,8 +86,10 @@ class Player(PhysicsObject):
             self.velocity[1] = -self.jumpForce
             
     def step(self):
-#        if self.x <= 25 or self.x >= SCREEN_WIDTH-25:
-#            self.velocity[0] = 0
+        if self.x <= 25 and self.velocity[0] < 0:
+            self.velocity[0] = 0
+        if self.x >= SCREEN_WIDTH-25 and self.velocity[0] > 0:
+            self.velocity[0] = 0
         super().step()
         if self.y < SCREEN_HEIGHT:
             self.velocity[1] += GRAVITY
@@ -151,6 +153,7 @@ class Ball(PhysicsObject):
     def bounce(self):
         self.velocity[1] *= -1
         self.velocity[1] -= GRAVITY
+#        self.velocity[1] += 50
         
     def step(self):
         super().step()
