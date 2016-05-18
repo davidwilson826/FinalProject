@@ -222,7 +222,7 @@ class TextSprite(Sprite):
 class TitleText(TextSprite):
     pass
         
-class IntroText(TextSprite):
+class FlashingText(TextSprite):
     pass
         
 class ScoreNum(TextSprite):
@@ -252,6 +252,7 @@ class HeadSoccer(App):
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
         self.intro = True
+        self.restart = False
         self.transparency = 1
         self.direction = 0
         self.playercolors = []
@@ -260,7 +261,7 @@ class HeadSoccer(App):
         self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
         self.intro = False
         self.getSpritesbyClass(TitleText)[0].destroy()
-        self.getSpritesbyClass(IntroText)[0].destroy()
+        self.getSpritesbyClass(FlashingText)[0].destroy()
         self.placeButtons()
     
     def placeButtons(self):
@@ -304,9 +305,10 @@ class HeadSoccer(App):
             else:
                 winner = "It's a draw!"
             TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
-            TimeUpText(TextAsset("Press Space to Restart", width=SCREEN_WIDTH), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+            #TimeUpText(TextAsset("Press Space to Restart", width=SCREEN_WIDTH), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             self.getSpritesbyClass(ScoreText)[0].destroy()
             self.go = False
+            self.restart = True
             self.listenKeyEvent('keydown', 'space', self.restart)
         seconds = remaining%60
         if seconds < 10:
@@ -318,22 +320,28 @@ class HeadSoccer(App):
         
     def restart(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.restart)
+        self.restart = False
         for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
             classDestroy(x)
         self.playercolors = []
         self.placeButtons()
         
+    def flashText(self, text):
+        classDestroy(FlashingText)
+        FlashingText(TextAsset(text, width=SCREEN_WIDTH, style='20pt Helvetica',
+        fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+        if self.transparency == 1:
+            self.direction = -0.01
+        elif self.transparency == 0:
+            self.direction = 0.01
+        self.transparency += self.direction
+        self.transparency = round(self.transparency, 2)
+        
     def step(self):
         if self.intro == True:
-            classDestroy(IntroText)
-            IntroText(TextAsset('Click to Continue', width=SCREEN_WIDTH, style='20pt Helvetica',
-            fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
-            if self.transparency == 1:
-                self.direction = -0.01
-            elif self.transparency == 0:
-                self.direction = 0.01
-            self.transparency += self.direction
-            self.transparency = round(self.transparency, 2)
+            self.flashText('Click to Continue')
+        elif self.restart == True:
+            self.flashText('Press Space to Restart')
         if self.go == True:
             self.getSpritesbyClass(TimeText)[0].destroy()
             self.timeGame()
