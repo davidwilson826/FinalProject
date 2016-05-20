@@ -15,11 +15,13 @@ SCREEN_HEIGHT = 700
 
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
-beige = Color(0xF5F5DC, 1.0)
 
 blue = Color(0x0000ff, 1.0)
 green = Color(0x00ff00, 1.0)
 red = Color(0xff0000, 1.0)
+yellow = Color(0xffff00, 1.0)
+cyan = Color(0x00ffff, 1.0)
+magenta = Color(0xff00ff, 1.0)
 
 noline = LineStyle(0.0, black)
 thinline = LineStyle(1.0, black)
@@ -44,7 +46,7 @@ class Border(Sprite):
 
 class Goal(Sprite):
     
-    asset = RectangleAsset(50, 200, noline, black)
+    asset = RectangleAsset(50, 300, noline, black)
     
     def __init__(self, position):
         super().__init__(Goal.asset, position)
@@ -157,7 +159,7 @@ class Ball(PhysicsObject):
         
     def step(self):
         super().step()
-        if self.y >= SCREEN_HEIGHT-30:
+        if self.y >= SCREEN_HEIGHT-30 or self.y <= 30:
             self.bounce()
         if self.x <= 30 or self.x >= SCREEN_WIDTH-30:
             self.velocity[0] *= -1
@@ -171,7 +173,7 @@ class Ball(PhysicsObject):
                     colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
-#                self.bounce()
+                self.bounce()
                 print('hello')
             elif self.scored == False:
                 for x in self.collidingWithSprites(Goal):
@@ -240,14 +242,14 @@ class HeadSoccer(App):
         super().__init__()
         self.width = 0.2*SCREEN_WIDTH
         self.height = 0.2*SCREEN_HEIGHT
-        self.buttoncolors = [blue, red, green]*3
+        self.buttoncolors = [blue, red, green, yellow, cyan, magenta]*3
         self.buttons = [((x%3+1)/4*SCREEN_WIDTH-self.width/2, 
         (x//3+1)/4*SCREEN_HEIGHT-self.height/2, self.buttoncolors[x]) for x in range(9)]
         self.start = 0
         self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 60
+        self.gameTime = 90
         TitleText(TextAsset('Head Soccer!', width=SCREEN_WIDTH, style='50pt Helvetica'), 
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
@@ -286,8 +288,8 @@ class HeadSoccer(App):
         for x in [(0,0,10,SCREEN_HEIGHT), (SCREEN_WIDTH-5,0,10,SCREEN_HEIGHT), 
         (0,SCREEN_HEIGHT-5,SCREEN_WIDTH+5,10), (0,0,SCREEN_WIDTH+5,10)]:
             Border(RectangleAsset(x[2], x[3], noline, black), (x[0],x[1]))
-        Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-200))
-        Goal((0,SCREEN_HEIGHT-200))
+        Goal((SCREEN_WIDTH-50,SCREEN_HEIGHT-300))
+        Goal((0,SCREEN_HEIGHT-300))
         ScoreText((SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
         self.start = time()
         self.timeGame()
@@ -305,13 +307,12 @@ class HeadSoccer(App):
             else:
                 winner = "It's a draw!"
             TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
-            #TimeUpText(TextAsset("Press Space to Restart", width=SCREEN_WIDTH), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             self.getSpritesbyClass(ScoreText)[0].destroy()
             self.go = False
             self.transparency = 1
             self.direction = 0
             self.restart = True
-            self.listenKeyEvent('keydown', 'space', self.restart)
+            self.listenKeyEvent('keydown', 'space', self.restartGame)
         seconds = remaining%60
         if seconds < 10:
             placeholder = ':0'
@@ -320,10 +321,10 @@ class HeadSoccer(App):
         TimeText(TextAsset(str(int(remaining//60))+placeholder+str(int(seconds))), 
         (SCREEN_WIDTH/2,SCREEN_HEIGHT/4))
         
-    def restart(self, event):
-        self.unlistenKeyEvent('keydown', 'space', self.restart)
+    def restartGame(self, event):
+        self.unlistenKeyEvent('keydown', 'space', self.restartGame)
         self.restart = False
-        for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum]:
+        for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum, FlashingText]:
             classDestroy(x)
         self.playercolors = []
         self.placeButtons()
