@@ -44,9 +44,10 @@ class Ball(Sprite):
     def step(self):
         self.x += self.velocity[0]
         self.y += self.velocity[1]
-        Rectangle = Collisions.getSpritesbyClass(Rectangle)[0]
-        if atan((Rectangle.x-self.x)/(Rectangle.y-self.y)) == 30:
-            print('hello')
+        rectangle = Collisions.getSpritesbyClass(Rectangle)[0]
+        if rectangle.x-self.x == 30:
+            print(atan((rectangle.y-self.y)/(rectangle.x-self.x)))
+            print(self.x,self.y)
         
 class Rectangle(Sprite):
     
@@ -59,8 +60,8 @@ class Collisions(App):
     
     def __init__(self):
         super().__init__()
-        Ball((500,300))
         Rectangle((750,200))
+        Ball((500,300))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
