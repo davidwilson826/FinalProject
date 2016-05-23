@@ -46,7 +46,7 @@ class Ball(Sprite):
         
 class Rectangle(Sprite):
     
-    asset = RectangleAsset(50, 150, noline, black)
+    asset = RectangleAsset(100, 200, noline, black)
     
     def __init__(self, position):
         super().__init__(Rectangle.asset, position)
@@ -57,7 +57,7 @@ class Collisions(App):
     def __init__(self):
         super().__init__()
         Ball((500,300))
-        Rectangle((0,0))
+        Rectangle((750,300))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
