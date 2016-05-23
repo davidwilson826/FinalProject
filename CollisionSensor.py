@@ -14,16 +14,31 @@ class Ball(Sprite):
         super().__init__(Ball.asset, position)
         self.fxcenter = self.fycenter = 0.5
         self.velocity = (0,0)
+        self.speed = 2
         Collisions.listenKeyEvent('keydown', 'left arrow', self.left)
+        Collisions.listenKeyEvent('keyup', 'left arrow', self.right)
         Collisions.listenKeyEvent('keydown', 'right arrow', self.right)
-        Collisions.listenKeyEvent('keydown', 'right arrow', self.right)
-        Collisions.listenKeyEvent('keydown', 'right arrow', self.left)
+        Collisions.listenKeyEvent('keyup', 'right arrow', self.left)
+        Collisions.listenKeyEvent('keydown', 'up arrow', self.up)
+        Collisions.listenKeyEvent('keyup', 'up arrow', self.down)
+        Collisions.listenKeyEvent('keydown', 'down arrow', self.down)
+        Collisions.listenKeyEvent('keyup', 'down arrow', self.up)
         
     def left(self, event):
-        self.velocity[0] -= 5
+        if self.velocity[0] > -self.speed:
+            self.velocity[0] -= self.speed
         
     def right(self, event):
-        self.velocity[0] += 5
+        if self.velocity[0] < self.speed:
+            self.velocity[0] += self.speed
+            
+    def up(self, event):
+        if self.velocity[1] > -self.speed:
+            self.velocity[1] -= self.speed
+            
+    def down(self, event):
+        if self.velocity[1] < self.speed:
+            self.velocity[1] += self.speed
         
     def step(self):
         self.x += self.velocity[0]
@@ -33,7 +48,7 @@ class Collisions(App):
     
     def __init__(self):
         super().__init__()
-        Ball((200,200))
+        Ball((500,500))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
