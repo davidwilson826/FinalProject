@@ -1,4 +1,5 @@
 from ggame import App, Sprite, Color, LineStyle, RectangleAsset, CircleAsset
+from math import atan
 
 black = Color(0x000000, 1.0)
 blue = Color(0x0000ff, 1.0)
@@ -43,6 +44,9 @@ class Ball(Sprite):
     def step(self):
         self.x += self.velocity[0]
         self.y += self.velocity[1]
+        Rectangle = Collisions.getSpritesbyClass(Rectangle)[0]
+        if atan((Rectangle.x-self.x)/(Rectangle.y-self.y)) == 30:
+            print('hello')
         
 class Rectangle(Sprite):
     
@@ -50,14 +54,13 @@ class Rectangle(Sprite):
     
     def __init__(self, position):
         super().__init__(Rectangle.asset, position)
-        self.fxcenter = self.fycenter = 0.5
         
 class Collisions(App):
     
     def __init__(self):
         super().__init__()
         Ball((500,300))
-        Rectangle((750,300))
+        Rectangle((750,200))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
