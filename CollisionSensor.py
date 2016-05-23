@@ -70,7 +70,7 @@ class Collisions(App):
         super().__init__()
         Rectangle((750,200))
         Ball((500,300))
-        Circle((0,0))
+        Circle((250,300))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
