@@ -53,8 +53,8 @@ class Ball(Sprite):
             angle = atan((circle.y-self.y)/(circle.x-self.x))
             print(angle)
             dist = 60-sqrt((self.x-circle.x)**2+(self.y-circle.y)**2)
-            self.x += dist*sin(angle)
-            self.y += dist*cos(angle)
+            self.x += dist*cos(angle)
+            self.y += dist*sin(angle)
         
 class Rectangle(Sprite):
     
