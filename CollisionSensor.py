@@ -1,5 +1,5 @@
 from ggame import App, Sprite, Color, LineStyle, RectangleAsset, CircleAsset
-from math import atan, sqrt
+from math import atan, sqrt, sin, cos
 
 black = Color(0x000000, 1.0)
 blue = Color(0x0000ff, 1.0)
@@ -50,7 +50,11 @@ class Ball(Sprite):
             print(self.x,self.y)
         circle = Collisions.getSpritesbyClass(Circle)[0]
         if sqrt((self.x-circle.x)**2+(self.y-circle.y)**2) <= 60:
-            print(atan((self.y-circle.y)/(self.x-circle.x)))
+            angle = atan((circle.y-self.y)/(circle.x-self.x))
+            print(angle)
+            dist = 60-sqrt((self.x-circle.x)**2+(self.y-circle.y)**2)
+            self.x += dist*sin(angle)
+            self.y += dist*cos(angle)
         
 class Rectangle(Sprite):
     
