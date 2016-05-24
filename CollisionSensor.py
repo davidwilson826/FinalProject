@@ -49,8 +49,8 @@ class Ball(Sprite):
             print((rectangle.y-self.y)/(rectangle.x-self.x))
             print(self.x,self.y)
         circle = Collisions.getSpritesbyClass(Circle)[0]
-        if sqrt((self.x-circle.x)**2+(self.y-circle.y)**2):
-            print(self.x, self.y)
+        if sqrt((self.x-circle.x)**2+(self.y-circle.y)**2) <= 60:
+            print(atan((self.y-circle.y)/(self.x-circle.x)))
         
 class Rectangle(Sprite):
     
