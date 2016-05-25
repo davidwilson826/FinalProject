@@ -240,11 +240,11 @@ class HeadSoccer(App):
 
     def __init__(self):
         super().__init__()
-        self.width = 0.2*SCREEN_WIDTH
-        self.height = 0.2*SCREEN_HEIGHT
+        self.width = 0.15*SCREEN_WIDTH
+        self.height = 0.15*SCREEN_HEIGHT
         self.buttoncolors = [blue, red, green, yellow, cyan, magenta]*3
-        self.buttons = [((x%3+1)/4*SCREEN_WIDTH-self.width/2, 
-        (x//3+1)/4*SCREEN_HEIGHT-self.height/2, self.buttoncolors[x]) for x in range(9)]
+        self.buttons = [((x//3-1)/5*SCREEN_WIDTH+SCREEN_WIDTH/2-width/2,
+        (x%3-1)/5*SCREEN_HEIGHT+SCREEN_HEIGHT/2-height/2, self.buttoncolors[x]) for x in range(9)]
         self.start = 0
         self.go = False
         self.frameTime = 0
