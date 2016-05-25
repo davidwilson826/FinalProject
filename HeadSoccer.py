@@ -280,7 +280,7 @@ class HeadSoccer(App):
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
                 self.playercolors.append(x[2])
-                PlayerColor(RectangleAsset(0.05*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT, noline, x[2]),
+                PlayerColor(RectangleAsset(0.05*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT, thinline, x[2]),
                 (0.15*SCREEN_WIDTH,0.5*SCREEN_HEIGHT))
                 if len(self.playercolors) == 2:
                     self.prepGame(self.playercolors)
