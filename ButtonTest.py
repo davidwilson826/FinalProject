@@ -20,10 +20,10 @@ class Test(App):
         Border(RectangleAsset(SCREEN_WIDTH, Border.width, noLine, black), (0, SCREEN_HEIGHT-(Border.width/2)))
         Border(RectangleAsset(Border.width, SCREEN_HEIGHT, noLine, black), (SCREEN_WIDTH-(Border.width/2), 0))
         for x in range(9):
-            width = 0.2*SCREEN_WIDTH
-            height = 0.2*SCREEN_HEIGHT
+            width = 0.15*SCREEN_WIDTH
+            height = 0.15*SCREEN_HEIGHT
             Button(RectangleAsset(width, height, noLine, black), 
-            ((x//3+1)/4*SCREEN_WIDTH-width/2,(x%3+1)/4*SCREEN_HEIGHT-height/2))
+            ((x//3-1)/5*SCREEN_WIDTH+SCREEN_WIDTH/2-width/2,(x%3-1)/5*SCREEN_HEIGHT+SCREEN_HEIGHT/2-height/2))
         for x in self.getSpritesbyClass(Button)[2:]:
             print(x.x,x.y)
             
