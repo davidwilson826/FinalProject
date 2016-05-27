@@ -282,9 +282,6 @@ class HeadSoccer(App):
             PlayerColor(TextAsset('Player '+x[0]+' color:', width=128), (x[1],x[2]))
         
     def buttonClick(self, event):
-        if len(self.getSpritesbyClass(Instructions)) == 0:
-            Instructions(TextAsset('Press "q" to change colors', width=SCREEN_WIDTH), (SCREEN_WIDTH/2, 50))
-            self.listenKeyEvent('keydown', 'q', self.changeColors)
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
                 self.playercolors.append(x[2])
@@ -294,7 +291,10 @@ class HeadSoccer(App):
                     pos = 0.85
                 PlayerColor(RectangleAsset(0.05*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT, thinline, x[2]),
                 (pos*SCREEN_WIDTH-64,0.5*SCREEN_HEIGHT+15))
-                if len(self.playercolors) == 2:
+                if len(self.playercolors) == 1:
+                    Instructions(TextAsset('Press "q" to change colors', width=SCREEN_WIDTH), (SCREEN_WIDTH/2, 50))
+                    self.listenKeyEvent('keydown', 'q', self.changeColors)
+                else:
                     self.stage = 'ready'
                     self.listenKeyEvent('keydown', 'space', self.begin)
                     #self.prepGame(self.playercolors)
@@ -305,6 +305,8 @@ class HeadSoccer(App):
             x.destroy()
         self.stage = 'buttons'
         classDestroy(FlashingText)
+        self.unlistenKeyEvent('keydown', 'space', self.begin)
+        self.unlistenKeyEvent('keydown', 'q', self.changeColors)
         
     def begin(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.begin)
