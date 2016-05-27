@@ -273,7 +273,7 @@ class HeadSoccer(App):
         for x in self.buttons:
             Button(RectangleAsset(self.width, self.height, thinline, x[2]), (x[0],x[1]))
         self.listenMouseEvent('mousedown', self.buttonClick)
-        for x in [('1',0.15*SCREEN_WIDTH-64,0.5*SCREEN_HEIGHT), ('2',0.85*SCREEN_WIDTH-64,0.5*SCREEN_HEIGHT)]:
+        for x in [('1',0.15*SCREEN_WIDTH,0.5*SCREEN_HEIGHT), ('2',0.85*SCREEN_WIDTH,0.5*SCREEN_HEIGHT)]:
             PlayerColor(TextAsset('Player '+x[0]+' color:', width=128), (x[1],x[2]))
         
     def buttonClick(self, event):
