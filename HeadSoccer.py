@@ -283,7 +283,7 @@ class HeadSoccer(App):
         
     def buttonClick(self, event):
         if len(self.getSpritesbyClass(Instructions)) == 0:
-            Instructions(TextAsset('Press "q" to change colors'), (SCREEN_WIDTH/2, 50))
+            Instructions(TextAsset('Press "q" to change colors', width=SCREEN_WIDTH), (SCREEN_WIDTH/2, 50))
             self.listenKeyEvent('keydown', 'q', self.changeColors)
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
@@ -303,6 +303,8 @@ class HeadSoccer(App):
         self.playercolors = []
         for x in self.getSpritesbyClass(PlayerColor)[2:]:
             x.destroy()
+        self.stage = 'buttons'
+        classDestroy(FlashingText)
         
     def begin(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.begin)
@@ -313,6 +315,7 @@ class HeadSoccer(App):
         classDestroy(Button)
         classDestroy(PlayerColor)
         classDestroy(FlashingText)
+        classDestroy(Instructions)
         Player1(CircleAsset(50, thinline, colors[0]), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Player2(CircleAsset(50, thinline, colors[1]), (SCREEN_WIDTH*3/4,SCREEN_HEIGHT))
         self.getSpritesbyClass(PlayerCover)[1].follow = Player2
