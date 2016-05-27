@@ -307,6 +307,7 @@ class HeadSoccer(App):
         classDestroy(FlashingText)
         self.unlistenKeyEvent('keydown', 'space', self.begin)
         self.unlistenKeyEvent('keydown', 'q', self.changeColors)
+        classDestroy(Instructions)
         
     def begin(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.begin)
