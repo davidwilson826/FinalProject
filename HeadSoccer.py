@@ -229,6 +229,9 @@ class FlashingText(TextSprite):
 
 class PlayerColor(TextSprite):
     pass
+
+class Instructions(TextSprite):
+    pass
         
 class ScoreNum(TextSprite):
     pass
@@ -249,27 +252,29 @@ class HeadSoccer(App):
         self.buttons = [((x%3-1)/5*SCREEN_WIDTH+SCREEN_WIDTH/2-self.width/2,
         (x//3-1)/5*SCREEN_HEIGHT+SCREEN_HEIGHT/2-self.height/2, self.buttoncolors[x]) for x in range(9)]
         self.start = 0
-        self.go = False
+        #self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 90
+        self.gameTime = 30
         TitleText(TextAsset('Head Soccer!', width=SCREEN_WIDTH, style='50pt Helvetica'), 
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
-        self.intro = True
-        self.restart = False
+        #self.intro = True
+        #self.restart = False
         self.transparency = 1
         self.direction = 0
         self.playercolors = []
+        self.stage = 'intro'
     
     def placeButtonsEvent(self, event):
         self.unlistenMouseEvent('mousedown', self.placeButtonsEvent)
-        self.intro = False
+        #self.intro = False
         self.getSpritesbyClass(TitleText)[0].destroy()
         self.getSpritesbyClass(FlashingText)[0].destroy()
         self.placeButtons()
     
     def placeButtons(self):
+        self.stage = 'buttons'
         for x in self.buttons:
             Button(RectangleAsset(self.width, self.height, thinline, x[2]), (x[0],x[1]))
         self.listenMouseEvent('mousedown', self.buttonClick)
@@ -277,6 +282,9 @@ class HeadSoccer(App):
             PlayerColor(TextAsset('Player '+x[0]+' color:', width=128), (x[1],x[2]))
         
     def buttonClick(self, event):
+        if len(self.getSpritesbyClass(Instructions)) == 0:
+            Instructions(TextAsset('Press "q" to change colors'), (SCREEN_WIDTH/2, 50))
+            self.listenKeyEvent('keydown', 'q', self.changeColors)
         for x in self.buttons:
             if x[0] <= event.x <= x[0]+self.width and x[1] <= event.y <= x[1]+self.height:
                 self.playercolors.append(x[2])
@@ -287,11 +295,24 @@ class HeadSoccer(App):
                 PlayerColor(RectangleAsset(0.05*SCREEN_WIDTH, 0.05*SCREEN_HEIGHT, thinline, x[2]),
                 (pos*SCREEN_WIDTH-64,0.5*SCREEN_HEIGHT+15))
                 if len(self.playercolors) == 2:
-                    self.prepGame(self.playercolors)
+                    self.stage = 'ready'
+                    self.listenKeyEvent('keydown', 'space', self.begin)
+                    #self.prepGame(self.playercolors)
+                    
+    def changeColors(self, event):
+        self.playercolors = []
+        for x in self.getSpritesbyClass(PlayerColor)[2:]:
+            x.destroy()
+        
+    def begin(self, event):
+        self.unlistenKeyEvent('keydown', 'space', self.begin)
+        self.prepGame(self.playercolors)
         
     def prepGame(self, colors):
         self.unlistenMouseEvent('mousedown', self.buttonClick)
         classDestroy(Button)
+        classDestroy(PlayerColor)
+        classDestroy(FlashingText)
         Player1(CircleAsset(50, thinline, colors[0]), (SCREEN_WIDTH/4,SCREEN_HEIGHT))
         Player2(CircleAsset(50, thinline, colors[1]), (SCREEN_WIDTH*3/4,SCREEN_HEIGHT))
         self.getSpritesbyClass(PlayerCover)[1].follow = Player2
@@ -305,7 +326,8 @@ class HeadSoccer(App):
         self.start = time()
         self.timeGame()
         self.frameTime = time()
-        self.go = True
+        #self.go = True
+        self.stage = 'play'
             
     def timeGame(self):
         remaining = self.gameTime-time()+self.start
@@ -319,10 +341,11 @@ class HeadSoccer(App):
                 winner = "It's a draw!"
             TimeUpText(TextAsset("Time's Up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
             self.getSpritesbyClass(ScoreText)[0].destroy()
-            self.go = False
+            #self.go = False
             self.transparency = 1
             self.direction = 0
-            self.restart = True
+            #self.restart = True
+            self.stage = 'restart'
             self.listenKeyEvent('keydown', 'space', self.restartGame)
         seconds = remaining%60
         if seconds < 10:
@@ -334,16 +357,16 @@ class HeadSoccer(App):
         
     def restartGame(self, event):
         self.unlistenKeyEvent('keydown', 'space', self.restartGame)
-        self.restart = False
+        #self.restart = False
         for x in [Ball, Player1, Player2, PlayerCover, Goal, Border, TimeUpText, TimeText, ScoreNum, FlashingText]:
             classDestroy(x)
         self.playercolors = []
         self.placeButtons()
         
-    def flashText(self, text):
+    def flashText(self, text, ypos):
         classDestroy(FlashingText)
         FlashingText(TextAsset(text, width=SCREEN_WIDTH, style='20pt Helvetica',
-        fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,SCREEN_HEIGHT/2))
+        fill=Color(0x000000, self.transparency)), (SCREEN_WIDTH/2,ypos))
         if self.transparency == 1:
             self.direction = -0.01
         elif self.transparency == 0:
@@ -352,11 +375,16 @@ class HeadSoccer(App):
         self.transparency = round(self.transparency, 2)
         
     def step(self):
-        if self.intro == True:
-            self.flashText('Click to Continue')
-        elif self.restart == True:
-            self.flashText('Press Space to Restart')
-        if self.go == True:
+        #if self.intro == True:
+        if self.stage == 'intro':
+            self.flashText('Click to Continue',SCREEN_HEIGHT/2)
+        #elif self.restart == True:
+        elif self.stage == 'restart':
+            self.flashText('Press Space to Restart',SCREEN_HEIGHT/2)
+        elif self.stage == 'ready':
+            self.flashText('Press Space to Begin',SCREEN_HEIGHT*0.85)
+        #if self.go == True:
+        if self.stage == 'play':
             self.getSpritesbyClass(TimeText)[0].destroy()
             self.timeGame()
             global deltaTime
