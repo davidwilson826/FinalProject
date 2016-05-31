@@ -341,12 +341,12 @@ class HeadSoccer(App):
         if remaining < 0:
             remaining = 0
             if score[0] > score[1]:
-                winner = '1'
+                winner = 'Player 1 wins!'
             elif score[1] > score[0]:
-                winner = '2'
+                winner = 'Player 2 wins!'
             else:
                 winner = "It's a draw!"
-            TimeUpText(TextAsset("Time's up! Player "+winner+" wins!", width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
+            TimeUpText(TextAsset("Time's up! "+winner, width=SCREEN_WIDTH), (SCREEN_WIDTH/2,SCREEN_HEIGHT/6))
             self.getSpritesbyClass(ScoreText)[0].destroy()
             #self.go = False
             self.transparency = 1
