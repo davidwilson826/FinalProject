@@ -1,5 +1,5 @@
 from ggame import App, Sprite, Color, LineStyle, RectangleAsset, CircleAsset
-from math import atan, sqrt, sin, cos
+from math import atan, sqrt, sin, cos, pi
 
 black = Color(0x000000, 1.0)
 blue = Color(0x0000ff, 1.0)
@@ -24,6 +24,11 @@ class Ball(Sprite):
         Collisions.listenKeyEvent('keyup', 'up arrow', self.down)
         Collisions.listenKeyEvent('keydown', 'down arrow', self.down)
         Collisions.listenKeyEvent('keyup', 'down arrow', self.up)
+        #circle = Collisions.getSpritesbyClass(Circle)[0]
+        #angle = atan((circle.y-self.y)/(self.x-circle.x))
+        #if self.x < circle.x:
+        #    angle += pi
+        #print(angle)
         
     def left(self, event):
         if self.velocity[0] > -self.speed:
@@ -50,7 +55,9 @@ class Ball(Sprite):
             print(self.x,self.y)
         circle = Collisions.getSpritesbyClass(Circle)[0]
         if sqrt((self.x-circle.x)**2+(self.y-circle.y)**2) <= 60:
-            angle = atan((circle.y-self.y)/(circle.x-self.x))
+            angle = atan((circle.y-self.y)/(self.x-circle.x))
+            if self.x < circle.x:
+                angle += pi
             print(angle)
             dist = 60-sqrt((self.x-circle.x)**2+(self.y-circle.y)**2)
             self.x += dist*cos(angle)
@@ -78,6 +85,7 @@ class Collisions(App):
         Rectangle((750,200))
         Ball((500,300))
         Circle((250,300))
+        #Ball((190,240))
         
     def step(self):
         self.getSpritesbyClass(Ball)[0].step()
