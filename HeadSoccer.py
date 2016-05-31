@@ -255,7 +255,7 @@ class HeadSoccer(App):
         #self.go = False
         self.frameTime = 0
         self.deltaTime = 0
-        self.gameTime = 30
+        self.gameTime = 90
         TitleText(TextAsset('Head Soccer!', width=SCREEN_WIDTH, style='50pt Helvetica'), 
         (SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
         self.listenMouseEvent('mousedown', self.placeButtonsEvent)
