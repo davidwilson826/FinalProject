@@ -304,8 +304,9 @@ class HeadSoccer(App):
         for x in self.getSpritesbyClass(PlayerColor)[2:]:
             x.destroy()
         self.stage = 'buttons'
-        classDestroy(FlashingText)
-        self.unlistenKeyEvent('keydown', 'space', self.begin)
+        if len(self.getSpritesbyClass(Instructions)) > 0:
+            self.getSpritesbyClass(Instructions)[0].destroy()
+            self.unlistenKeyEvent('keydown', 'space', self.begin)
         self.unlistenKeyEvent('keydown', 'q', self.changeColors)
         classDestroy(Instructions)
         
