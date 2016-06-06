@@ -176,8 +176,9 @@ class Ball(PhysicsObject):
                     colliding.velocity[x] = (2*self.mass)/(self.mass+colliding.mass)*(self.velCollision[x]-colliding.velocity[x])+colliding.velocity[x]
         if len(self.collidingWithSprites(Goal)) > 0:
             if self.y <= SCREEN_HEIGHT-230:
-                self.bounce()
-                print('hello')
+                if self.x <= 80 or self.x >= SCREEN_WIDTH-80:
+                    self.bounce()
+                    print('hello')
             elif self.scored == False:
                 for x in self.collidingWithSprites(Goal):
                     HeadSoccer.getSpritesbyClass(ScoreText)[0].goal(x)
