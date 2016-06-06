@@ -22,6 +22,9 @@ red = Color(0xff0000, 1.0)
 yellow = Color(0xffff00, 1.0)
 cyan = Color(0x00ffff, 1.0)
 magenta = Color(0xff00ff, 1.0)
+orange = Color(0xFFA500, 1.0)
+purple = Color(0x800080, 1.0)
+gray = Color(0xBEBEBE, 1.0)
 
 noline = LineStyle(0.0, black)
 thinline = LineStyle(1.0, black)
@@ -248,7 +251,7 @@ class HeadSoccer(App):
         super().__init__()
         self.width = 0.15*SCREEN_WIDTH
         self.height = 0.15*SCREEN_HEIGHT
-        self.buttoncolors = [blue, red, green, yellow, cyan, magenta]*2
+        self.buttoncolors = [blue, red, green, yellow, cyan, magenta, orange, purple, gray]
         self.buttons = [((x%3-1)/5*SCREEN_WIDTH+SCREEN_WIDTH/2-self.width/2,
         (x//3-1)/5*SCREEN_HEIGHT+SCREEN_HEIGHT/2-self.height/2, self.buttoncolors[x]) for x in range(9)]
         self.start = 0
