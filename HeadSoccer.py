@@ -165,7 +165,7 @@ class Ball(PhysicsObject):
             self.velocity[0] *= -1
         self.velocity[1] += GRAVITY
         for x in [Player1, Player2]:
-            if len(self.collidingWithSprites(x)) > 0:
+            if len(self.collidingWithSprites(x)) > 0 and self.y <= HeadSoccer.getSpritesbyClass(x)[0].y+30:
                 colliding = self.collidingWithSprites(x)[0]
                 self.velCollision = self.velocity[:]
                 for x in range(2):
