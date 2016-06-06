@@ -13,6 +13,9 @@ from time import time
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 700
 
+#SCREEN_WIDTH = 1000
+#SCREEN_HEIGHT = 600
+
 black = Color(0x000000, 1.0)
 white = Color(0xffffff, 1.0)
 
