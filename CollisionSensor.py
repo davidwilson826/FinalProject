@@ -55,13 +55,21 @@ class Ball(Sprite):
             print(self.x,self.y)
         circle = Collisions.getSpritesbyClass(Circle)[0]
         if sqrt((self.x-circle.x)**2+(self.y-circle.y)**2) <= 60:
-            angle = atan((circle.y-self.y)/(self.x-circle.x))
+            if self.x == circle.x:
+                if self.y > circle.y:
+                    angle = pi/2
+                else:
+                    angle = 3*pi/2
+            else:
+                angle = atan((circle.y-self.y)/(self.x-circle.x))
             if self.x < circle.x:
                 angle += pi
             print(angle)
-            dist = 60-sqrt((self.x-circle.x)**2+(self.y-circle.y)**2)
-            self.x += dist*cos(angle)
-            self.y += dist*sin(angle)
+            #dist = 60-sqrt((self.x-circle.x)**2+(self.y-circle.y)**2)
+            #self.x += dist*cos(angle)
+            #self.y += dist*sin(angle)
+            self.x = 60*cos(angle)+circle.x
+            self.y = 60*sin(angle)+circle.x
         
 class Rectangle(Sprite):
     
